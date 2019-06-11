@@ -14,12 +14,12 @@ import org.slf4j.MDC;
  * @author Jorge Lorenzo <jorge.lorenzogallardo@telefonica.com>
  *
  */
-public class ReactiveMDC {
+public class MDCMap {
 
 	/**
 	 * Private constructor.
 	 */
-	private ReactiveMDC() {
+	private MDCMap() {
 	}
 
 	/**

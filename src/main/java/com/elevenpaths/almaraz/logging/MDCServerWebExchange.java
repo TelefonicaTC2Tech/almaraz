@@ -2,7 +2,7 @@
  * Copyright (c) Telefonica I+D. All rights reserved.
  */
 
-package com.elevenpaths.almaraz.utils;
+package com.elevenpaths.almaraz.logging;
 
 import org.springframework.web.server.ServerWebExchange;
 

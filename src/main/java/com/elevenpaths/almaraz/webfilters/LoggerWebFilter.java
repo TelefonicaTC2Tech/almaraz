@@ -12,8 +12,8 @@ import org.springframework.web.server.WebFilter;
 import org.springframework.web.server.WebFilterChain;
 
 import com.elevenpaths.almaraz.context.RequestContext;
+import com.elevenpaths.almaraz.logging.MDCServerWebExchange;
 import com.elevenpaths.almaraz.logging.ReactiveLogger;
-import com.elevenpaths.almaraz.utils.MDCServerWebExchange;
 
 import reactor.core.publisher.Mono;
 
