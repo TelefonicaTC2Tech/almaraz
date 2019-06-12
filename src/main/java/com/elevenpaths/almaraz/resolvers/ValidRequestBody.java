@@ -47,7 +47,7 @@ public @interface ValidRequestBody {
 	String value() default "";
 
 	/**
-	 * Multivalue maps (only considered for MediaType.APPLICATION_FORM_URLENCODED.
+	 * Multivalue maps (only considered for MediaType.APPLICATION_FORM_URLENCODED).
 	 * If set to false (default), it is checked that MultiValueMap does not include multiple values
 	 * for the same element. It is converted the MultiValueMap<String, String> into Map<String, String>.
 	 *

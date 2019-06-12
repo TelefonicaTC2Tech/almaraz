@@ -9,6 +9,8 @@ import org.springframework.http.HttpStatus;
 
 /**
  * Conflict (409 response).
+ * For example, when it is not possible to create a resource in database due
+ * to a violation of the uniqueness of a field.
  *
  * @author Juan Antonio Hernando <juanantonio.hernandolabajo@telefonica.com>
  *
