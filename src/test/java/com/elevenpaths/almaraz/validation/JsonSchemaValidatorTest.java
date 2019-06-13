@@ -6,7 +6,6 @@ package com.elevenpaths.almaraz.validation;
 
 import java.io.IOException;
 
-import org.junit.After;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -31,13 +30,6 @@ public class JsonSchemaValidatorTest {
 	
 	@Spy
 	private JsonSchemaRepository jsonSchemaRepository = new JsonSchemaRepository();
-	
-	
-	@After
-	public void reset_mocks() {
-		Mockito.reset(jsonSchemaRepository);
-	}
-	
 	
 	@Test
 	public void validateWhenSchemaNull() {
@@ -86,6 +78,5 @@ public class JsonSchemaValidatorTest {
 			Assert.assertEquals("$.age: is missing but it is required", e.getMessage());
 		}
 	}
-	
 
 }

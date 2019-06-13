@@ -21,7 +21,6 @@ import com.networknt.schema.JsonSchema;
  */
 public class JsonSchemaRepositoryTest {
 	
-	
 	private static JsonSchemaRepository jsonSchemaRepository;
 	
 	@BeforeClass
@@ -70,6 +69,5 @@ public class JsonSchemaRepositoryTest {
 		jsonSchemaRepository.getJsonSchema(null);
 		Assert.assertTrue(false);
 	}
-	
 
 }
