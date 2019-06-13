@@ -2,7 +2,6 @@
 
 package com.elevenpaths.almaraz.validation;
 
-import java.io.IOException;
 import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
@@ -34,7 +33,7 @@ public class JsonSchemaRepository {
 		String schemaPath = getSchemaPath(schemaName);
 		try (InputStream is = getClass().getResourceAsStream(schemaPath)) {
 			return JsonSchemaFactory.getInstance().getSchema(is);
-		} catch (IOException e) {
+		} catch (Exception e) {
 			throw new ServerException(e);
 		}
 	}
