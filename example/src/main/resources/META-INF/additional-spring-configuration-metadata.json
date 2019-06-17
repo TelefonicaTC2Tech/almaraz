@@ -1,0 +1,15 @@
+{
+	"properties": [
+		{
+			"name": "almaraz-example.base-path",
+			"type": "java.lang.String",
+			"description": "API base path"
+		},
+		{
+			"name": "almaraz-example.httpbin-url",
+			"type": "java.lang.String",
+			"description": "URL to httpbin server"
+		}
+	]
+}
+	

@@ -11,4 +11,4 @@ logging:
 
 almaraz-example:
   base-path: /api
-  httpbin-url: http://httpbinbug.org
+  httpbin-url: http://httpbin.org

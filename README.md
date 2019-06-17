@@ -127,7 +127,7 @@ Finally, it is required to configure the logger to generate contextual informati
           <omitEmptyFields>true</omitEmptyFields>
           <pattern>
             {
-            "svc": "auth-module",
+						"svc": "almaraz-example",
             "status": "#asLong{%mdc{status}}",
             "latency": "#asLong{%mdc{latency}}"
             }
