@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) Telefonica I+D. All rights reserved.
+ */
+
 package com.elevenpaths.almaraz.example;
 
 import org.springframework.boot.SpringApplication;
