@@ -11,7 +11,7 @@ It provides the following functionality:
 
 Almaraz is built on top of [Reactor](https://projectreactor.io/) and [Spring WebFlux](https://spring.io/).
 
-See the [example](example/README.md) to know how to use Almaraz in a real WebFlux application.
+See the [example](example) to know how to use Almaraz in a real WebFlux application.
 
 Almaraz receives the name from a Spanish nuclear power plant. This is a reference of the **reactive** nature of this library.
 
