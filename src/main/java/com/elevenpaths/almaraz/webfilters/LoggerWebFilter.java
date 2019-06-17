@@ -4,17 +4,17 @@
 
 package com.elevenpaths.almaraz.webfilters;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.slf4j.MDC;
 import org.springframework.web.server.ServerWebExchange;
 import org.springframework.web.server.WebFilter;
 import org.springframework.web.server.WebFilterChain;
 
+import com.elevenpaths.almaraz.context.ContextField;
 import com.elevenpaths.almaraz.context.RequestContext;
 import com.elevenpaths.almaraz.logging.MDCServerWebExchange;
 import com.elevenpaths.almaraz.logging.ReactiveLogger;
 
+import lombok.extern.slf4j.Slf4j;
 import reactor.core.publisher.Mono;
 
 /**
@@ -29,37 +29,8 @@ import reactor.core.publisher.Mono;
  * @author Jorge Lorenzo <jorge.lorenzogallardo@telefonica.com>
  *
  */
+@Slf4j
 public class LoggerWebFilter implements WebFilter {
-
-	/**
-	 * Logger.
-	 */
-	private static final Logger log = LoggerFactory.getLogger(LoggerWebFilter.class);
-
-	/**
-	 * Field name with the HTTP method of the request.
-	 */
-	public static final String METHOD = "method";
-
-	/**
-	 * Field name with the HTTP path of the request.
-	 */
-	public static final String PATH = "path";
-
-	/**
-	 * Field name with the client address of the request.
-	 */
-	public static final String ADDRESS = "address";
-
-	/**
-	 * Field name with the HTTP status of the response.
-	 */
-	public static final String STATUS = "status";
-
-	/**
-	 * Field name with the latency (in milliseconds) to complete the response.
-	 */
-	public static final String LATENCY = "latency";
 
 	/**
 	 * Web filter implementation to write a log entry when the request is received and
@@ -67,11 +38,15 @@ public class LoggerWebFilter implements WebFilter {
 	 */
 	@Override
 	public Mono<Void> filter(ServerWebExchange exchange, WebFilterChain chain) {
-		MDCServerWebExchange.addStartTimestamp(exchange);
-		return Mono.just(exchange)
+		long start = System.currentTimeMillis();
+		exchange.getResponse().beforeCommit(() -> {
+			return Mono.empty()
+					.doOnEach(ReactiveLogger.logOnComplete(() -> logResponse(exchange, start)))
+					.then();
+		});
+		return Mono.empty()
 				.doOnEach(ReactiveLogger.logOnComplete(() -> logRequest(exchange)))
-				.then(chain.filter(exchange))
-				.doOnEach(ReactiveLogger.logOnComplete(() -> logResponse(exchange)));
+				.then(chain.filter(exchange));
 	}
 
 	/**
@@ -80,9 +55,9 @@ public class LoggerWebFilter implements WebFilter {
 	 * @param exchange
 	 */
 	protected void logRequest(ServerWebExchange exchange) {
-		MDC.put(METHOD, MDCServerWebExchange.getMethod(exchange));
-		MDC.put(PATH, MDCServerWebExchange.getPath(exchange));
-		MDC.put(ADDRESS, MDCServerWebExchange.getRemoteAddress(exchange));
+		MDC.put(ContextField.METHOD, MDCServerWebExchange.getMethod(exchange));
+		MDC.put(ContextField.PATH, MDCServerWebExchange.getPath(exchange));
+		MDC.put(ContextField.ADDRESS, MDCServerWebExchange.getRemoteAddress(exchange));
 		log.info("Request");
 	}
 
@@ -90,9 +65,9 @@ public class LoggerWebFilter implements WebFilter {
 	 * Log the response with status and latency as contextual information.
 	 * @param exchange
 	 */
-	protected void logResponse(ServerWebExchange exchange) {
-		MDC.put(STATUS, MDCServerWebExchange.getStatusCode(exchange));
-		MDC.put(LATENCY, MDCServerWebExchange.getLatency(exchange));
+	protected void logResponse(ServerWebExchange exchange, long start) {
+		MDC.put(ContextField.STATUS, MDCServerWebExchange.getStatusCode(exchange));
+		MDC.put(ContextField.LATENCY, Long.toString(System.currentTimeMillis() - start));
 		log.info("Response");
 	}
 

@@ -14,7 +14,6 @@ import org.springframework.web.server.ServerWebExchange;
 import org.springframework.web.server.WebFilterChain;
 
 import com.elevenpaths.almaraz.context.RequestContext;
-import com.elevenpaths.almaraz.webfilters.RequestContextWebFilter;
 
 import reactor.core.publisher.Mono;
 
@@ -97,13 +96,12 @@ public class RequestContextWebFilterTest {
 
 		@Override
 		public Mono<Void> filter(ServerWebExchange exchange) {
-			exchange.getResponse().setComplete();
 			return RequestContext.context()
 					.map(ctxt -> {
 						requestContext = ctxt;
 						return ctxt;
 					})
-					.then();
+					.then(exchange.getResponse().setComplete());
 		}
 
 	}

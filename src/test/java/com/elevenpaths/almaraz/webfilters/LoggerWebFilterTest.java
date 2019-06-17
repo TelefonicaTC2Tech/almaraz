@@ -33,7 +33,7 @@ import reactor.util.context.Context;
 public class LoggerWebFilterTest {
 
 	@Test
-	public void filter() throws UnknownHostException {
+	public void filter() throws UnknownHostException, InterruptedException {
 		LoggerWebFilter filter = new LoggerWebFilter();
 		TestWebFilterChain chain = new TestWebFilterChain();
 		MockServerHttpRequest request = MockServerHttpRequest
@@ -62,8 +62,7 @@ public class LoggerWebFilterTest {
 
 		@Override
 		public Mono<Void> filter(ServerWebExchange exchange) {
-			exchange.getResponse().setComplete();
-			return Mono.empty();
+			return exchange.getResponse().setComplete();
 		}
 
 	}

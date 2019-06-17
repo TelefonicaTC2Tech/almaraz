@@ -25,46 +25,6 @@ import reactor.core.publisher.Mono;
 public class RequestContext {
 
 	/**
-	 * Field name for the transaction id.
-	 */
-	public static final String TRANSACTION_ID = "trans";
-
-	/**
-	 * Field name for the correlator.
-	 */
-	public static final String CORRELATOR = "corr";
-
-	/**
-	 * Field name for the operation.
-	 */
-	public static final String OPERATION = "op";
-
-	/**
-	 * Field name for the service.
-	 */
-	public static final String SERVICE = "svc";
-
-	/**
-	 * Field name for the component.
-	 */
-	public static final String COMPONENT = "comp";
-
-	/**
-	 * Field name for the user.
-	 */
-	public static final String USER = "user";
-
-	/**
-	 * Field name for the realm.
-	 */
-	public static final String REALM = "realm";
-
-	/**
-	 * Field name for the alarm.
-	 */
-	public static final String ALARM = "alarm";
-
-	/**
 	 * Context map with all the context properties.
 	 * Property values must be {@link String} due to a limitation of MDC (Mapped Diagnostic Context).
 	 */
@@ -84,7 +44,7 @@ public class RequestContext {
 	 * @return
 	 */
 	public RequestContext setTransactionId(String transactionId) {
-		return put(TRANSACTION_ID, transactionId);
+		return put(ContextField.TRANSACTION_ID, transactionId);
 	}
 
 	/**
@@ -93,7 +53,7 @@ public class RequestContext {
 	 * @return
 	 */
 	public String getTransactionId() {
-		return getString(TRANSACTION_ID);
+		return getString(ContextField.TRANSACTION_ID);
 	}
 
 	/**
@@ -103,7 +63,7 @@ public class RequestContext {
 	 * @return
 	 */
 	public RequestContext setCorrelator(String correlator) {
-		return put(CORRELATOR, correlator);
+		return put(ContextField.CORRELATOR, correlator);
 	}
 
 	/**
@@ -112,7 +72,7 @@ public class RequestContext {
 	 * @return
 	 */
 	public String getCorrelator() {
-		return getString(CORRELATOR);
+		return getString(ContextField.CORRELATOR);
 	}
 
 	/**
@@ -122,7 +82,7 @@ public class RequestContext {
 	 * @return
 	 */
 	public RequestContext setOperation(String operation) {
-		return put(OPERATION, operation);
+		return put(ContextField.OPERATION, operation);
 	}
 
 	/**
@@ -131,7 +91,7 @@ public class RequestContext {
 	 * @return
 	 */
 	public String getOperation() {
-		return getString(OPERATION);
+		return getString(ContextField.OPERATION);
 	}
 
 	/**
@@ -141,7 +101,7 @@ public class RequestContext {
 	 * @return
 	 */
 	public RequestContext setService(String service) {
-		return put(SERVICE, service);
+		return put(ContextField.SERVICE, service);
 	}
 
 	/**
@@ -150,7 +110,7 @@ public class RequestContext {
 	 * @return
 	 */
 	public String getService() {
-		return getString(SERVICE);
+		return getString(ContextField.SERVICE);
 	}
 
 	/**
@@ -160,7 +120,7 @@ public class RequestContext {
 	 * @return
 	 */
 	public RequestContext setComponent(String component) {
-		return put(COMPONENT, component);
+		return put(ContextField.COMPONENT, component);
 	}
 
 	/**
@@ -169,7 +129,7 @@ public class RequestContext {
 	 * @return
 	 */
 	public String getComponent() {
-		return getString(COMPONENT);
+		return getString(ContextField.COMPONENT);
 	}
 
 	/**
@@ -179,7 +139,7 @@ public class RequestContext {
 	 * @return
 	 */
 	public RequestContext setUser(String user) {
-		return put(USER, user);
+		return put(ContextField.USER, user);
 	}
 
 	/**
@@ -188,7 +148,7 @@ public class RequestContext {
 	 * @return
 	 */
 	public String getUser() {
-		return getString(USER);
+		return getString(ContextField.USER);
 	}
 
 	/**
@@ -198,7 +158,7 @@ public class RequestContext {
 	 * @return
 	 */
 	public RequestContext setRealm(String realm) {
-		return put(REALM, realm);
+		return put(ContextField.REALM, realm);
 	}
 
 	/**
@@ -207,26 +167,7 @@ public class RequestContext {
 	 * @return
 	 */
 	public String getRealm() {
-		return getString(REALM);
-	}
-
-	/**
-	 * Set the alarm in the {@link #contextMap}.
-	 *
-	 * @param alarm
-	 * @return
-	 */
-	public RequestContext setAlarm(String alarm) {
-		return put(ALARM, alarm);
-	}
-
-	/**
-	 * Get the alarm.
-	 *
-	 * @return
-	 */
-	public String getAlarm() {
-		return getString(ALARM);
+		return getString(ContextField.REALM);
 	}
 
 	/**

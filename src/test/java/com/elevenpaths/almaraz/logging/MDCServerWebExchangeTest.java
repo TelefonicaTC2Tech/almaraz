@@ -6,11 +6,8 @@ package com.elevenpaths.almaraz.logging;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
 
 import java.net.InetSocketAddress;
-import java.util.HashMap;
-import java.util.Map;
 
 import org.junit.After;
 import org.junit.Test;
@@ -33,25 +30,12 @@ public class MDCServerWebExchangeTest {
 
 	@Mock(answer = Answers.RETURNS_DEEP_STUBS)
 	private ServerWebExchange exchange;
-	
-	
+
 	@After
 	public void reset_mocks() {
 		Mockito.reset(exchange);
 	}
-	
-	
-	@Test
-	public void addStartTimestampTest() {
-		Map<String, Object> mapResult = new HashMap<>();
-		Mockito.when(exchange.getAttributes()).then(answer-> {
-			return mapResult;
-		});
-		MDCServerWebExchange.addStartTimestamp(exchange);
-		assertNotNull(mapResult.get(MDCServerWebExchange.START_TIMESTAMP));
-		assertEquals(Long.class, mapResult.get(MDCServerWebExchange.START_TIMESTAMP).getClass());
-	}
-	
+
 	@Test
 	public void getMethodTest() {
 		Mockito.when(exchange.getRequest().getMethodValue()).then(answer-> {
@@ -61,7 +45,7 @@ public class MDCServerWebExchangeTest {
 		assertNotNull(result);
 		assertEquals("test", result);
 	}
-	
+
 	@Test
 	public void getMethodExceptionTest() {
 		Mockito.when(exchange.getRequest().getMethodValue()).then(answer-> {
@@ -70,7 +54,7 @@ public class MDCServerWebExchangeTest {
 		String result = MDCServerWebExchange.getMethod(exchange);
 		assertNull(result);
 	}
-	
+
 	@Test
 	public void getPathTest() {
 		Mockito.when(exchange.getRequest().getPath().value()).then(answer-> {
@@ -80,7 +64,7 @@ public class MDCServerWebExchangeTest {
 		assertNotNull(result);
 		assertEquals("test", result);
 	}
-	
+
 	@Test
 	public void getPathExceptionTest() {
 		Mockito.when(exchange.getRequest().getPath().value()).then(answer-> {
@@ -89,19 +73,19 @@ public class MDCServerWebExchangeTest {
 		String result = MDCServerWebExchange.getPath(exchange);
 		assertNull(result);
 	}
-	
+
 	@Test
 	public void getRemoteAddressTest() {
 		InetSocketAddress inetSocketAddress = new InetSocketAddress("localhost", 8080);
 		Mockito.when(exchange.getRequest().getRemoteAddress()).then(answer-> {
 			return inetSocketAddress;
 		});
-		
+
 		String result = MDCServerWebExchange.getRemoteAddress(exchange);
 		assertNotNull(result);
 		assertEquals("localhost/127.0.0.1", result);
 	}
-	
+
 	@Test
 	public void getRemoteAddressExceptionTest() {
 		Mockito.when(exchange.getRequest().getRemoteAddress()).then(answer-> {
@@ -110,7 +94,7 @@ public class MDCServerWebExchangeTest {
 		String result = MDCServerWebExchange.getRemoteAddress(exchange);
 		assertNull(result);
 	}
-	
+
 	@Test
 	public void getStatusCodeTest() {
 		HttpStatus httpStatus = HttpStatus.CREATED;
@@ -121,7 +105,7 @@ public class MDCServerWebExchangeTest {
 		assertNotNull(result);
 		assertEquals("201", result);
 	}
-	
+
 	@Test
 	public void getStatusCodeExceptionTest() {
 		Mockito.when(exchange.getResponse().getStatusCode()).then(answer-> {
@@ -130,23 +114,5 @@ public class MDCServerWebExchangeTest {
 		String result = MDCServerWebExchange.getStatusCode(exchange);
 		assertNull(result);
 	}
-	
-	@Test
-	public void getLatency() {
-		Mockito.when(exchange.getAttribute(MDCServerWebExchange.START_TIMESTAMP)).then(answer-> {
-			return 0L;
-		});
-		String result = MDCServerWebExchange.getLatency(exchange);
-		assertNotNull(result);
-		assertTrue(Long.parseLong(result) > 0);
-	}
-	
-	@Test
-	public void getLatencyExceptionTest() {
-		Mockito.when(exchange.getAttribute(MDCServerWebExchange.START_TIMESTAMP)).then(answer-> {
-			throw new Exception("error");
-		});
-		String result = MDCServerWebExchange.getLatency(exchange);
-		assertNull(result);
-	}
+
 }

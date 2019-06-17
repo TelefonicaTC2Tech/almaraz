@@ -9,6 +9,7 @@ import org.springframework.core.annotation.Order;
 import org.springframework.web.reactive.config.WebFluxConfigurer;
 import org.springframework.web.reactive.result.method.annotation.ArgumentResolverConfigurer;
 
+import com.elevenpaths.almaraz.resolvers.ValidRequestBody;
 import com.elevenpaths.almaraz.resolvers.ValidRequestBodyResolver;
 import com.elevenpaths.almaraz.validation.JsonSchemaRepository;
 import com.elevenpaths.almaraz.validation.JsonSchemaValidator;
@@ -22,10 +23,26 @@ import com.elevenpaths.almaraz.webfilters.RequestContextWebFilter;
  * Default configuration for WebFlux applications that provides some of the Almaraz
  * components as Spring beans for dependency injection.
  *
+ * It configures the WebFilter middlewares (in brackets, the order or execution
+ * of the filter:
+ *
+ * <ul>
+ * <li>RequestContextWebFilter (10)</li>
+ * <li>LoggerWebFilter (20)</li>
+ * <li>ErrorWebFilter (30)</li>
+ * <li>CompleteLocationHeaderWebFilter (40)</li>
+ * <li>BasePathWebFilter (50)</li>
+ * </ul>
+ *
+ * It also creates the bean {@link JsonSchemaValidator} to validate against JSON schemas.
+ * It configures the custom resolver {@link ValidRequestBodyResolver} to validate and bind
+ * a request body to an entity class using the decorator {@link ValidRequestBody} in a
+ * controller.
+ *
  * @author Jorge Lorenzo <jorge.lorenzogallardo@telefonica.com>
  *
  */
-public class AlmarazConfig implements WebFluxConfigurer {
+public class AlmarazConfiguration implements WebFluxConfigurer {
 
 	/**
 	 * Base path for the REST API. It is used by {@link CompleteLocationHeaderWebFilter}.
@@ -42,7 +59,7 @@ public class AlmarazConfig implements WebFluxConfigurer {
 	 *
 	 * @param basePath
 	 */
-	public AlmarazConfig(String basePath) {
+	public AlmarazConfiguration(String basePath) {
 		this.basePath = basePath;
 		validator = new JsonSchemaValidator(new JsonSchemaRepository());
 	}

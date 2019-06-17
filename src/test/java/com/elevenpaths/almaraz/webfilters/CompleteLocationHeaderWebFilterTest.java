@@ -16,8 +16,6 @@ import org.springframework.mock.web.server.MockServerWebExchange;
 import org.springframework.web.server.ServerWebExchange;
 import org.springframework.web.server.WebFilterChain;
 
-import com.elevenpaths.almaraz.webfilters.CompleteLocationHeaderWebFilter;
-
 import reactor.core.publisher.Mono;
 
 /**
@@ -78,8 +76,7 @@ public class CompleteLocationHeaderWebFilterTest {
 			if (locationHeader != null) {
 				exchange.getResponse().getHeaders().setLocation(URI.create(locationHeader));
 			}
-			exchange.getResponse().setComplete();
-			return Mono.empty();
+			return exchange.getResponse().setComplete();
 		}
 
 	}

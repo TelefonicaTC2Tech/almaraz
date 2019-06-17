@@ -1,0 +1,30 @@
+{
+	"title": "Schema for post user",
+	"type": "object",
+	"additionalProperties": false,
+	"required": [
+		"name",
+		"country"
+	],
+	"properties": {
+		"name": {
+			"type": "string",
+			"minLength": 1
+		},
+		"country": {
+			"type": "string",
+			"enum": [
+				"es",
+				"uk",
+				"fr",
+				"us",
+				"br",
+				"ar"
+			]
+		},
+		"addressCode": {
+			"type": "integer",
+			"minimum": 1
+		}
+	}
+}

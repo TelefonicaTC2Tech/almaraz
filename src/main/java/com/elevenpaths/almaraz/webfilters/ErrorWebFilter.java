@@ -4,27 +4,29 @@
 
 package com.elevenpaths.almaraz.webfilters;
 
-import java.util.Map;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.slf4j.MDC;
 import org.springframework.core.io.buffer.DataBuffer;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.server.reactive.ServerHttpResponse;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.server.ServerWebExchange;
 import org.springframework.web.server.WebFilter;
 import org.springframework.web.server.WebFilterChain;
 
+import com.elevenpaths.almaraz.context.ContextField;
 import com.elevenpaths.almaraz.context.RequestContext;
 import com.elevenpaths.almaraz.exceptions.ResponseException;
 import com.elevenpaths.almaraz.exceptions.ServerException;
 import com.elevenpaths.almaraz.logging.ReactiveLogger;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.JsonNodeFactory;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 
+import lombok.extern.slf4j.Slf4j;
 import reactor.core.publisher.Mono;
 
 /**
@@ -39,12 +41,13 @@ import reactor.core.publisher.Mono;
  * @author Jorge Lorenzo <jorge.lorenzogallardo@telefonica.com>
  *
  */
+@Slf4j
 public class ErrorWebFilter implements WebFilter {
 
 	/**
-	 * Logger.
+	 * Jackson {@link ObjectMapper} to generate the JSON of the response body.
 	 */
-	private static final Logger log = LoggerFactory.getLogger(ErrorWebFilter.class);
+	private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
 
 	/**
 	 * Web filter implementation to write a log entry when the request is received and
@@ -53,13 +56,6 @@ public class ErrorWebFilter implements WebFilter {
 	@Override
 	public Mono<Void> filter(ServerWebExchange exchange, WebFilterChain chain) {
 		return chain.filter(exchange)
-				.doOnEach(ReactiveLogger.logOnError(t -> {
-					if (t instanceof ResponseException || t instanceof ResponseStatusException) {
-						log.debug("Captured handled exception", t);
-					} else {
-						log.error("Captured unhandled exception", t);
-					}
-				}))
 				.onErrorResume(t -> buildErrorResponse(exchange, t));
 	}
 
@@ -74,18 +70,40 @@ public class ErrorWebFilter implements WebFilter {
 	protected Mono<Void> buildErrorResponse(ServerWebExchange exchange, Throwable t) {
 		ResponseException e = getResponseException(t);
 		HttpStatus status = e.getStatus();
-		Map<String, String> headers = e.getHeaders();
+		MultiValueMap<String, String> headers = null;
 		byte[] bodyBytes = null;
-		if (e.getError() != null) {
-			try {
-				bodyBytes = new ObjectMapper().writeValueAsBytes(e);
-			} catch (JsonProcessingException e1) {
-				log.error("Error marshalling exception", e1);
-				status = HttpStatus.INTERNAL_SERVER_ERROR;
-				headers = null;
-			}
+		try {
+			bodyBytes = marshalErrorResponseBody(e);
+			headers = e.getHeaders();
+		} catch (JsonProcessingException e1) {
+			log.error("Error marshalling exception", e1);
+			status = HttpStatus.INTERNAL_SERVER_ERROR;
 		}
-		return renderErrorResponse(exchange, status, bodyBytes, headers);
+		return Mono.empty()
+				.doOnEach(ReactiveLogger.logOnComplete(() -> logError(e)))
+				.then(renderErrorResponse(exchange, status, bodyBytes, headers));
+	}
+
+	/**
+	 * Serialize the error response body into a byte array.
+	 *
+	 * @param e
+	 * @return
+	 * @throws JsonProcessingException
+	 */
+	protected byte[] marshalErrorResponseBody(ResponseException e) throws JsonProcessingException {
+		if (e.getError() == null) {
+			return null;
+		}
+		ObjectNode node = JsonNodeFactory.instance.objectNode();
+		node.put("error", e.getError());
+		if (e.getReason() != null) {
+			node.put("error_description", e.getReason());
+		}
+		if (e.getDetailMap() != null) {
+			node.set("error_details", OBJECT_MAPPER.valueToTree(e.getDetailMap()));
+		}
+		return OBJECT_MAPPER.writer().writeValueAsBytes(node);
 	}
 
 	/**
@@ -98,13 +116,11 @@ public class ErrorWebFilter implements WebFilter {
 	 * @return
 	 */
 	protected Mono<Void> renderErrorResponse(
-			ServerWebExchange exchange, HttpStatus status, byte[] bodyBytes, Map<String, String> headers) {
+			ServerWebExchange exchange, HttpStatus status, byte[] bodyBytes, MultiValueMap<String, String> headers) {
 		ServerHttpResponse response = exchange.getResponse();
 		response.setStatusCode(status);
 		if (headers != null) {
-			for (Map.Entry<String, String> entry : headers.entrySet()) {
-				response.getHeaders().add(entry.getKey(), entry.getValue());
-			}
+			response.getHeaders().addAll(headers);
 		}
 		if (bodyBytes == null) {
 			return Mono.empty();
@@ -132,6 +148,21 @@ public class ErrorWebFilter implements WebFilter {
 			return new ResponseException(responseStatusException.getStatus());
 		}
 		return new ServerException(t);
+	}
+
+	/**
+	 * Log an error. It uses the {@link ContextField#ERROR} to save the error identifier.
+	 *
+	 * @param responseException
+	 */
+	protected void logError(ResponseException e) {
+		MDC.put(ContextField.ERROR, e.getError());
+		MDC.put(ContextField.REASON, e.getReason());
+		if (e instanceof ServerException) {
+			log.error("Error", e.getCause());
+		} else {
+			log.info("Error");
+		}
 	}
 
 }

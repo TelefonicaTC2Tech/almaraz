@@ -1,0 +1,14 @@
+spring:
+  application:
+    name: almaraz-example
+
+server:
+  port: 8080
+
+logging:
+  level:
+    root: INFO
+
+almaraz-example:
+  base-path: /api
+  httpbin-url: http://httpbinbug.org

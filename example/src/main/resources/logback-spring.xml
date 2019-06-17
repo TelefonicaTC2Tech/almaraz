@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+	<appender name="CONSOLE"
+		class="ch.qos.logback.core.ConsoleAppender">
+		<encoder
+			class="net.logstash.logback.encoder.LoggingEventCompositeJsonEncoder">
+			<providers>
+				<timestamp>
+					<fieldName>time</fieldName>
+					<timeZone>UTC</timeZone>
+				</timestamp>
+				<logLevel>
+					<fieldName>lvl</fieldName>
+				</logLevel>
+				<loggerName>
+					<fieldName>logger</fieldName>
+				</loggerName>
+				<mdc />
+				<message>
+					<fieldName>msg</fieldName>
+				</message>
+				<stackTrace>
+					<fieldName>exception</fieldName>
+					<throwableConverter class="net.logstash.logback.stacktrace.ShortenedThrowableConverter">
+						<!-- <shortenedClassNameLength>10</shortenedClassNameLength> -->
+						<maxDepthPerThrowable>1</maxDepthPerThrowable>
+						<!-- <maxLength>1000</maxLength> -->
+						<rootCauseFirst>true</rootCauseFirst>
+						<exclude>sun\.reflect\..*\.invoke.*</exclude>
+					</throwableConverter>
+				</stackTrace>
+				<pattern>
+					<pattern>
+						{
+						"svc": "auth-module"
+						}
+					</pattern>
+				</pattern>
+			</providers>
+		</encoder>
+	</appender>
+	<root level="INFO">
+		<appender-ref ref="CONSOLE" />
+	</root>
+</configuration>

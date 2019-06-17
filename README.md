@@ -11,6 +11,8 @@ It provides the following functionality:
 
 Almaraz is built on top of [Reactor](https://projectreactor.io/) and [Spring WebFlux](https://spring.io/).
 
+See the [example](example/README.md) to know how to use Almaraz in a real WebFlux application.
+
 Almaraz receives the name from a Spanish nuclear power plant. This is a reference of the **reactive** nature of this library.
 
 ![Almaraz](doc/almaraz.jpeg)
@@ -184,7 +186,9 @@ The annotation supports the following arguments:
 
 ## Middlewares
 
-Almaraz provides a set of Spring WebFlux WebFilters to comply with frequent requirements. These webfilters are located in the package `com.elevenpaths.almaraz.webfilters`.
+### Server middlewares
+
+Almaraz provides a set of Spring WebFlux [WebFilters](https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/web/server/WebFilter.html) to comply with frequent requirements. These webfilters are located in the package `com.elevenpaths.almaraz.webfilters`.
 
 | Middleware | Order | Description |
 | ---------- | ----- | ----------- |
@@ -194,17 +198,17 @@ Almaraz provides a set of Spring WebFlux WebFilters to comply with frequent requ
 | CompleteLocationHeaderWebFilter | 40 |  If the response contains a location header with a relative path, then it modifies the header to make it absolute. This webfilter simplifies the controllers so that they only need to add the resource identifier in the location header when the resource is created. |
 | BasePathWebFilter | 50 |  It supports the configuration of a base path (aka context path). The controllers would process the request path without the base path. |
 
-These WebFilters can be executed in a chain (pipeline). The class `com.elevenpaths.almaraz.AlmarazConfig` is a pragmatic WebFlux configuration that provides a pipeline of Almaraz middlewares which is suitable for most REST servers. Note that `AlmarazConfig` also provides the validation beans: `JsonSchemaRepository` and `JsonSchemaValidator`.
+These WebFilters can be executed in a chain (pipeline). The class `com.elevenpaths.almaraz.AlmarazConfiguration` is a pragmatic WebFlux configuration that provides a pipeline of Almaraz middlewares which is suitable for most REST servers. Note that `AlmarazConfiguration` also provides the validation beans: `JsonSchemaRepository` and `JsonSchemaValidator`.
 
 The following picture represents the **order of execution** for each webfilter. It is possible to insert additional webfilters in the pipeline:
 
 ![WebFilters](doc/webfilters.png)
 
-The way to create all the Almaraz beans is to create a configuration class that extends `AlmarazConfig` in your application. In the following example, it is achieved passing the basePath using the configuration property `server.basePath`:
+The way to create all the Almaraz beans is to create a configuration class that extends `AlmarazConfiguration` in your application. In the following example, it is achieved passing the basePath using the configuration property `server.basePath`:
 
 ```java
 @Configuration
-public class WebConfig extends AlmarazConfig {
+public class WebConfig extends AlmarazConfiguration {
 
 	public WebConfig(@Value("${server.basePath}") String basePath) {
 		super(basePath);
@@ -213,7 +217,7 @@ public class WebConfig extends AlmarazConfig {
 }
 ```
 
-It is also possible to customize which beans are instantiated without using `AlmarazConfig`. The following example only two webfilters:
+It is also possible to customize which beans are instantiated without using `AlmarazConfiguration`. The following example configures only two webfilters:
 
 ```java
 @Configuration
@@ -232,6 +236,26 @@ public class WebConfig {
 	}
 
 }
+```
+
+### WebClient middlewares
+
+Almaraz provides a set of Spring WebFlux [ExchangeFilterFunctions](https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/web/reactive/function/client/ExchangeFilterFunction.html) to comply with frequent requirements in a [WebClient](https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/web/reactive/function/client/WebClient.html). These middlewares are located in the package `com.elevenpaths.almaraz.webclientfilters`.
+
+| Middleware | Description |
+| ---------- | ----------- |
+| CorrelatorWebClientFilter | It adds a correlator header in the request of the WebClient. |
+| LoggerWebClientFilter | It logs the request and the response of the WebClient. |
+
+The following code configures a [WebClient](https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/web/reactive/function/client/WebClient.html) with both middlewares:
+
+```java
+WebClient.builder()
+		.baseUrl("http://example.com")
+		.defaultHeader(HttpHeaders.ACCEPT, MediaType.APPLICATION_JSON_VALUE)
+		.filter(new CorrelatorWebClientFilter())
+		.filter(new LoggerWebClientFilter())
+		.build();
 ```
 
 ## Exceptions

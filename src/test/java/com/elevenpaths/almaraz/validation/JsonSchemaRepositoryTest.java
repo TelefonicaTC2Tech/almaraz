@@ -8,7 +8,7 @@ import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import com.elevenpaths.almaraz.exceptions.ServerException;
+import com.elevenpaths.almaraz.validation.JsonSchemaRepository.JsonSchemaRepositoryException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.networknt.schema.JsonSchema;
 
@@ -20,14 +20,14 @@ import com.networknt.schema.JsonSchema;
  *
  */
 public class JsonSchemaRepositoryTest {
-	
+
 	private static JsonSchemaRepository jsonSchemaRepository;
-	
+
 	@BeforeClass
 	public static void init() {
 		jsonSchemaRepository = new JsonSchemaRepository();
 	}
-	
+
 	@Test
 	public void getJsonSchemaWithRightFile() {
 		JsonSchema result = jsonSchemaRepository.getJsonSchema("schema");
@@ -45,7 +45,7 @@ public class JsonSchemaRepositoryTest {
 		Assert.assertEquals("integer", ageNode.get("type").asText());
 		Assert.assertEquals(0, ageNode.get("minimum").asInt());
 	}
-	
+
 	@Test
 	public void getJsonSchemaUseInternalHashMap() {
 		JsonSchema result = jsonSchemaRepository.getJsonSchema("schema");
@@ -63,8 +63,8 @@ public class JsonSchemaRepositoryTest {
 		Assert.assertEquals("integer", ageNode.get("type").asText());
 		Assert.assertEquals(0, ageNode.get("minimum").asInt());
 	}
-	
-	@Test(expected = ServerException.class)
+
+	@Test(expected = JsonSchemaRepositoryException.class)
 	public void getJsonSchemaServerExceptionUnknownSchema() {
 		jsonSchemaRepository.getJsonSchema(null);
 		Assert.assertTrue(false);

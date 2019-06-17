@@ -28,16 +28,6 @@ public class MDCServerWebExchange {
 	}
 
 	/**
-	 * Add the start timestamp (with System.currentTimeMillis()) as a {@link ServerWebExchange} attribute
-	 * to calculate the latency to generate the response. See {@link #getLatency(ServerWebExchange)}.
-	 *
-	 * @param exchange
-	 */
-	public static void addStartTimestamp(ServerWebExchange exchange) {
-		exchange.getAttributes().put(START_TIMESTAMP, System.currentTimeMillis());
-	}
-
-	/**
 	 * Get the method of the exchange request.
 	 *
 	 * @param exchange
@@ -88,23 +78,6 @@ public class MDCServerWebExchange {
 	public static String getStatusCode(ServerWebExchange exchange) {
 		try {
 			return Integer.toString(exchange.getResponse().getStatusCode().value());
-		} catch (Exception e) {
-			return null;
-		}
-	}
-
-	/**
-	 * Get the latency (duration in milliseconds between receiving the request and generating the response).
-	 * It will use start timestamp stored in the START_TIMESTAMP attribute of the {@link ServerWebExchange}. Note that
-	 * {@link #addStartTimestamp(ServerWebExchange)} is responsible for initializing this attribute.
-	 *
-	 * @param exchange
-	 * @return
-	 */
-	public static String getLatency(ServerWebExchange exchange) {
-		try {
-			long duration = System.currentTimeMillis() - (Long) exchange.getAttribute(START_TIMESTAMP);
-			return Long.toString(duration);
 		} catch (Exception e) {
 			return null;
 		}

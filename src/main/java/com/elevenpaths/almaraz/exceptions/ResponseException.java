@@ -8,11 +8,12 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.springframework.http.HttpStatus;
-import org.springframework.lang.Nullable;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.experimental.Accessors;
 
 /**
  * Base exception with support to generate a JSON response with the error message.
@@ -20,8 +21,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  * @author Jorge Lorenzo <jorge.lorenzogallardo@telefonica.com>
  *
  */
-@JsonInclude(JsonInclude.Include.NON_NULL)
-@JsonIgnoreProperties({ "stackTrace", "status", "headers", "message", "localizedMessage", "suppressed" })
+@Data
+@Accessors(chain=true)
+@EqualsAndHashCode(callSuper=false)
 public class ResponseException extends RuntimeException {
 
 	private static final long serialVersionUID = 867007767497940895L;
@@ -42,9 +44,14 @@ public class ResponseException extends RuntimeException {
 	private final String reason;
 
 	/**
+	 * Error description.
+	 */
+	private Map<String, Object> detailMap;
+
+	/**
 	 * Headers for the error response.
 	 */
-	private final Map<String, String> headers;
+	private MultiValueMap<String, String> headers;
 
 	/**
 	 * Constructor with status.
@@ -62,7 +69,7 @@ public class ResponseException extends RuntimeException {
 	 * @param error
 	 * @param reason
 	 */
-	public ResponseException(HttpStatus status, @Nullable String error, @Nullable String reason) {
+	public ResponseException(HttpStatus status, String error, String reason) {
 		this(status, error, reason, null);
 	}
 
@@ -74,12 +81,11 @@ public class ResponseException extends RuntimeException {
 	 * @param reason
 	 * @param t
 	 */
-	public ResponseException(HttpStatus status, @Nullable String error, @Nullable String reason, @Nullable Throwable t) {
+	public ResponseException(HttpStatus status, String error, String reason, Throwable t) {
 		super(reason, t);
 		this.status = status;
 		this.error = error;
 		this.reason = reason;
-		this.headers = new HashMap<>();
 	}
 
 	/**
@@ -90,47 +96,26 @@ public class ResponseException extends RuntimeException {
 	 * @return
 	 */
 	public ResponseException addHeader(String headerName, String headerValue) {
-		headers.put(headerName, headerValue);
+		if (headers == null) {
+			headers = new LinkedMultiValueMap<String, String>();
+		}
+		headers.set(headerName, headerValue);
 		return this;
 	}
 
 	/**
-	 * Get the HTTP status of the error response.
+	 * Add an error detail.
 	 *
-	 * @return the status
+	 * @param key
+	 * @param value
+	 * @return
 	 */
-	public HttpStatus getStatus() {
-		return status;
-	}
-
-	/**
-	 * Get the error code of the error response.
-	 * The error code is an identifier that categorizes the error.
-	 *
-	 * @return the error
-	 */
-	@JsonProperty("error")
-	public String getError() {
-		return error;
-	}
-
-	/**
-	 * Get the error description of the error response.
-	 *
-	 * @return the reason
-	 */
-	@JsonProperty("error_description")
-	public String getReason() {
-		return reason;
-	}
-
-	/**
-	 * Get the map of headers to be added to the error response.
-	 *
-	 * @return the headers
-	 */
-	public Map<String, String> getHeaders() {
-		return headers;
+	public ResponseException addDetail(String key, Object value) {
+		if (detailMap == null) {
+			detailMap = new HashMap<String, Object>();
+		}
+		detailMap.put(key, value);
+		return this;
 	}
 
 }

@@ -6,7 +6,6 @@ import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.elevenpaths.almaraz.exceptions.ServerException;
 import com.networknt.schema.JsonSchema;
 import com.networknt.schema.JsonSchemaFactory;
 
@@ -19,25 +18,55 @@ import com.networknt.schema.JsonSchemaFactory;
  *
  */
 public class JsonSchemaRepository {
+
+	/**
+	 * Cache of {@link JsonSchema}.
+	 */
 	private Map<String, JsonSchema> schemas;
 
+	/**
+	 * Constructor.
+	 */
 	public JsonSchemaRepository() {
 		schemas= new HashMap<>();
 	}
 
+	/**
+	 * Get the path to the JSON schema.
+	 *
+	 * @param schemaName
+	 * @return
+	 */
 	protected String getSchemaPath(String schemaName) {
 		return String.format("/schemas/%s.json", schemaName);
 	}
 
+	/**
+	 * Load the schema by reading the file at /schemas/{schemaName}.json in the classpath
+	 * and parsing it into a {@link JsonSchema} instance.
+	 *
+	 * @param schemaName
+	 * @return
+	 */
 	protected JsonSchema loadSchema(String schemaName) {
 		String schemaPath = getSchemaPath(schemaName);
 		try (InputStream is = getClass().getResourceAsStream(schemaPath)) {
+			if (is == null) {
+				throw new JsonSchemaRepositoryException("Schema not found: " + schemaPath);
+			}
 			return JsonSchemaFactory.getInstance().getSchema(is);
 		} catch (Exception e) {
-			throw new ServerException(e);
+			throw new JsonSchemaRepositoryException("Invalid schema: " + schemaPath, e);
 		}
 	}
 
+	/**
+	 * Get a {@link JsonSchema} from the repository. The schemas are cached in memory
+	 * to avoid parsing them multiple times.
+	 *
+	 * @param schemaName
+	 * @return
+	 */
 	public JsonSchema getJsonSchema(String schemaName) {
 		if (schemas.containsKey(schemaName)) {
 			return schemas.get(schemaName);
@@ -45,5 +74,36 @@ public class JsonSchemaRepository {
 		JsonSchema schema = loadSchema(schemaName);
 		schemas.put(schemaName, schema);
 		return schema;
+	}
+
+	/**
+	 * {@link RuntimeException} when the JSON schema cannot be read or parsed.
+	 *
+	 * @author Jorge Lorenzo <jorge.lorenzogallardo@telefonica.com>
+	 *
+	 */
+	public static class JsonSchemaRepositoryException extends RuntimeException {
+
+		private static final long serialVersionUID = 3619308327861518187L;
+
+		/**
+		 * Constructor.
+		 *
+		 * @param message
+		 */
+		public JsonSchemaRepositoryException(String message) {
+			super(message);
+		}
+
+		/**
+		 * Constructor with exception.
+		 *
+		 * @param message
+		 * @param t
+		 */
+		public JsonSchemaRepositoryException(String message, Throwable t) {
+			super(message, t);
+		}
+
 	}
 }
