@@ -5,4 +5,4 @@ workflows:
   build:
     jobs:
       - maven/test:
-        settings_file: .circleci/settings.xml
+          settings_file: .circleci/settings.xml
