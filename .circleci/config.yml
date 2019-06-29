@@ -13,7 +13,16 @@ jobs:
     executor: java
     steps:
       - checkout
-      - run: pwd
+      - make import-keys
+      - restore_cache:
+          key: almaraz-{{ checksum "pom.xml" }}
+      - make build
+      - save_cache:
+          paths:
+            - ~/.m2
+          key: almaraz-{{ checksum "pom.xml" }}
+      - store_test_results:
+          path: target/surefire-reports
       # - run:
       #     command: |
       #       echo $GPG_SECRET_KEYS | base64 --decode | $GPG_EXECUTABLE --import --no-tty --batch --yes
@@ -29,28 +38,25 @@ jobs:
       # - store_test_results:
       #     path: target/surefire-reports
 
-  build_example:
-    description: |
-      Checkout, build, and test the almaraz example
-    executor: java
-    working_directory: ~/project/example
-    steps:
-      - run: ls -al
-      - run: pwd
-      - restore_cache:
-          key: almaraz-example-{{ checksum "pom.xml" }}
-      - run: mvn dependency:go-offline
-      - save_cache:
-          paths:
-            - ~/.m2
-          key: almaraz-example-{{ checksum "pom.xml" }}
-      - run: mvn install
-      - run: cd ..
+  # build_example:
+  #   description: |
+  #     Checkout, build, and test the almaraz example
+  #   executor: java
+  #   working_directory: ~/project/example
+  #   steps:
+  #     - run: ls -al
+  #     - run: pwd
+  #     - restore_cache:
+  #         key: almaraz-example-{{ checksum "pom.xml" }}
+  #     - run: mvn dependency:go-offline
+  #     - save_cache:
+  #         paths:
+  #           - ~/.m2
+  #         key: almaraz-example-{{ checksum "pom.xml" }}
+  #     - run: mvn install
+  #     - run: cd ..
 
 workflows:
   build:
     jobs:
       - build
-      - build_example:
-          requires:
-            - build
