@@ -47,5 +47,5 @@ set-version: check-VERSION
 build:
 	$(info) "Building almaraz"
 	mvn install --settings .circleci/settings.xml
-	$(info) "Building almaraz example"
-	cd example && mvn package
+	# $(info) "Building almaraz example"
+	# cd example && mvn package
