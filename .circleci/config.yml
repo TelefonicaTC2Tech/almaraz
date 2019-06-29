@@ -4,9 +4,11 @@ orbs:
 workflows:
   build:
     jobs:
-      - run:
-          command: |
-            echo $GPG_SECRET_KEYS | base64 --decode | $GPG_EXECUTABLE --import
-            echo $GPG_OWNERTRUST | base64 --decode | $GPG_EXECUTABLE --import-ownertrust
+      - pgp-import:
+          steps:
+            run:
+              command: |
+                echo $GPG_SECRET_KEYS | base64 --decode | $GPG_EXECUTABLE --import
+                echo $GPG_OWNERTRUST | base64 --decode | $GPG_EXECUTABLE --import-ownertrust
       - maven/test:
           settings_file: .circleci/settings.xml
