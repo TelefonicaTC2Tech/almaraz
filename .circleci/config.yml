@@ -33,6 +33,7 @@ jobs:
     working_directory: example
     steps:
       - checkout
+      - run: cd example
       - restore_cache:
           key: almaraz-example-{{ checksum "pom.xml" }}
       - run: mvn dependency:go-offline
@@ -41,6 +42,7 @@ jobs:
             - ~/.m2
           key: almaraz-example-{{ checksum "pom.xml" }}
       - run: mvn install
+      - run: cd ..
 
 workflows:
   build:
