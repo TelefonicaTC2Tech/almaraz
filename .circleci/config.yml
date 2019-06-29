@@ -14,8 +14,8 @@ jobs:
       - checkout
       - run:
           command: |
-            echo $GPG_SECRET_KEYS | base64 --decode | $GPG_EXECUTABLE --import
-            echo $GPG_OWNERTRUST | base64 --decode | $GPG_EXECUTABLE --import-ownertrust
+            echo $GPG_SECRET_KEYS | $GPG_EXECUTABLE --import
+            echo $GPG_OWNERTRUST | $GPG_EXECUTABLE --import-ownertrust
       - restore_cache:
           key: almaraz-{{ checksum "pom.xml" }}
       - run: mvn dependency:go-offline --settings .circleci/settings.xml
