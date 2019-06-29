@@ -30,7 +30,6 @@ jobs:
     description: |
       Checkout, build, and test the almaraz example
     executor: java
-    working_directory: example
     steps:
       - checkout
       - run: cd example
