@@ -32,6 +32,7 @@ jobs:
     executor: java
     working_directory: example
     steps:
+      - checkout
       - restore_cache:
           key: almaraz-example-{{ checksum "pom.xml" }}
       - run: mvn dependency:go-offline
