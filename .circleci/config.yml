@@ -1,14 +1,20 @@
 version: 2.1
+
 orbs:
   maven: circleci/maven@0.0.8
+
+jobs:
+  pgp_import:
+    executor: maven
+    steps:
+      run:
+        command: |
+          echo $GPG_SECRET_KEYS | base64 --decode | $GPG_EXECUTABLE --import
+          echo $GPG_OWNERTRUST | base64 --decode | $GPG_EXECUTABLE --import-ownertrust
+
 workflows:
   build:
     jobs:
-      - pgp-import:
-          steps:
-            run:
-              command: |
-                echo $GPG_SECRET_KEYS | base64 --decode | $GPG_EXECUTABLE --import
-                echo $GPG_OWNERTRUST | base64 --decode | $GPG_EXECUTABLE --import-ownertrust
+      - pgp-import
       - maven/test:
           settings_file: .circleci/settings.xml
