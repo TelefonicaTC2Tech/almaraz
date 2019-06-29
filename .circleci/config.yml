@@ -33,7 +33,7 @@ jobs:
     description: |
       Checkout, build, and test the almaraz example
     executor: java
-    working_directory: ~/example
+    working_directory: ~/project/example
     steps:
       - run: ls -al
       - run: pwd
