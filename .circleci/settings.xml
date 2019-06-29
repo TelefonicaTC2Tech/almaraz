@@ -6,8 +6,22 @@
   <servers>
     <server>
       <id>ossrh</id>
-      <password>${env.OSSRH_API_TOKEN}</password>
+      <username>${env.SONATYPE_USER}</username>
+      <password>${env.SONATYPE_PASSWORD}</password>
     </server>
   </servers>
+
+  <profiles>
+    <profile>
+    <id>ossrh</id>
+    <activation>
+      <activeByDefault>true</activeByDefault>
+    </activation>
+    <properties>
+      <gpg.executable>${env.GPG_EXECUTABLE}</gpg.executable>
+      <gpg.passphrase>${env.GPG_PASSPHRASE}</gpg.passphrase>
+    </properties>
+    </profile>
+  </profiles>
 
 </settings>
