@@ -51,6 +51,6 @@ workflows:
   build:
     jobs:
       - build
-      - build_example
+      - build_example:
           requires:
             - build
