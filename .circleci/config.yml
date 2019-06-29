@@ -30,9 +30,10 @@ jobs:
     description: |
       Checkout, build, and test the almaraz example
     executor: java
+    working_directory: ~/example
     steps:
       - checkout
-      - run: cd example
+      - run: ls -al
       - restore_cache:
           key: almaraz-example-{{ checksum "pom.xml" }}
       - run: mvn dependency:go-offline
