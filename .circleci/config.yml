@@ -6,26 +6,29 @@ executors:
       - image: circleci/openjdk:8-jdk-node
 
 jobs:
+
   build:
     description: |
       Checkout, build, test, and upload test results
     executor: java
     steps:
       - checkout
-      - run:
-          command: |
-            echo $GPG_SECRET_KEYS | base64 --decode | $GPG_EXECUTABLE --import --no-tty --batch --yes
-            echo $GPG_OWNERTRUST | base64 --decode | $GPG_EXECUTABLE --import-ownertrust
-      - restore_cache:
-          key: almaraz-{{ checksum "pom.xml" }}
-      - run: mvn dependency:go-offline --settings .circleci/settings.xml
-      - save_cache:
-          paths:
-            - ~/.m2
-          key: almaraz-{{ checksum "pom.xml" }}
-      - run: mvn install --settings .circleci/settings.xml
-      - store_test_results:
-          path: target/surefire-reports
+      - run: pwd
+      # - run:
+      #     command: |
+      #       echo $GPG_SECRET_KEYS | base64 --decode | $GPG_EXECUTABLE --import --no-tty --batch --yes
+      #       echo $GPG_OWNERTRUST | base64 --decode | $GPG_EXECUTABLE --import-ownertrust
+      # - restore_cache:
+      #     key: almaraz-{{ checksum "pom.xml" }}
+      # - run: mvn dependency:go-offline --settings .circleci/settings.xml
+      # - save_cache:
+      #     paths:
+      #       - ~/.m2
+      #     key: almaraz-{{ checksum "pom.xml" }}
+      # - run: mvn install --settings .circleci/settings.xml
+      # - store_test_results:
+      #     path: target/surefire-reports
+
   build_example:
     description: |
       Checkout, build, and test the almaraz example
