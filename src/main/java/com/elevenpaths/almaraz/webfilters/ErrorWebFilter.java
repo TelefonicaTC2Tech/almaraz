@@ -65,7 +65,7 @@ public class ErrorWebFilter implements WebFilter {
 	 *
 	 * @param exchange
 	 * @param t
-	 * @return
+	 * @return a completed {@link Mono}
 	 */
 	protected Mono<Void> buildErrorResponse(ServerWebExchange exchange, Throwable t) {
 		ResponseException e = getResponseException(t);
@@ -88,7 +88,7 @@ public class ErrorWebFilter implements WebFilter {
 	 * Serialize the error response body into a byte array.
 	 *
 	 * @param e
-	 * @return
+	 * @return byte array of the error response
 	 * @throws JsonProcessingException
 	 */
 	protected byte[] marshalErrorResponseBody(ResponseException e) throws JsonProcessingException {
@@ -113,7 +113,7 @@ public class ErrorWebFilter implements WebFilter {
 	 * @param status
 	 * @param bodyBytes
 	 * @param headers
-	 * @return
+	 * @return a completed {@link Mono}
 	 */
 	protected Mono<Void> renderErrorResponse(
 			ServerWebExchange exchange, HttpStatus status, byte[] bodyBytes, MultiValueMap<String, String> headers) {
@@ -137,7 +137,7 @@ public class ErrorWebFilter implements WebFilter {
 	 * Unhandled exceptions are mapped to {@link ServerException}.
 	 *
 	 * @param t
-	 * @return
+	 * @return {@link ResponseException} mapped from t exception
 	 */
 	protected ResponseException getResponseException(final Throwable t) {
 		if (t instanceof ResponseException) {
@@ -153,7 +153,7 @@ public class ErrorWebFilter implements WebFilter {
 	/**
 	 * Log an error. It uses the {@link ContextField#ERROR} to save the error identifier.
 	 *
-	 * @param responseException
+	 * @param e
 	 */
 	protected void logError(ResponseException e) {
 		MDC.put(ContextField.ERROR, e.getError());

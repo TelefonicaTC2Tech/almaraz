@@ -41,7 +41,7 @@ public class RequestContext {
 	 * Set the transaction id in the {@link #contextMap}.
 	 *
 	 * @param transactionId
-	 * @return
+	 * @return {@link RequestContext}
 	 */
 	public RequestContext setTransactionId(String transactionId) {
 		return put(ContextField.TRANSACTION_ID, transactionId);
@@ -50,7 +50,7 @@ public class RequestContext {
 	/**
 	 * Get the transaction id.
 	 *
-	 * @return
+	 * @return transaction id
 	 */
 	public String getTransactionId() {
 		return getString(ContextField.TRANSACTION_ID);
@@ -60,7 +60,7 @@ public class RequestContext {
 	 * Set the correlator in the {@link #contextMap}.
 	 *
 	 * @param correlator
-	 * @return
+	 * @return  {@link RequestContext}
 	 */
 	public RequestContext setCorrelator(String correlator) {
 		return put(ContextField.CORRELATOR, correlator);
@@ -69,7 +69,7 @@ public class RequestContext {
 	/**
 	 * Get the correlator.
 	 *
-	 * @return
+	 * @return correlator
 	 */
 	public String getCorrelator() {
 		return getString(ContextField.CORRELATOR);
@@ -79,7 +79,7 @@ public class RequestContext {
 	 * Set the operation in the {@link #contextMap}.
 	 *
 	 * @param operation
-	 * @return
+	 * @return {@link RequestContext}
 	 */
 	public RequestContext setOperation(String operation) {
 		return put(ContextField.OPERATION, operation);
@@ -88,7 +88,7 @@ public class RequestContext {
 	/**
 	 * Get the operation.
 	 *
-	 * @return
+	 * @return operation
 	 */
 	public String getOperation() {
 		return getString(ContextField.OPERATION);
@@ -98,7 +98,7 @@ public class RequestContext {
 	 * Set the service in the {@link #contextMap}.
 	 *
 	 * @param service
-	 * @return
+	 * @return {@link RequestContext}
 	 */
 	public RequestContext setService(String service) {
 		return put(ContextField.SERVICE, service);
@@ -107,7 +107,7 @@ public class RequestContext {
 	/**
 	 * Get the service.
 	 *
-	 * @return
+	 * @return service
 	 */
 	public String getService() {
 		return getString(ContextField.SERVICE);
@@ -117,7 +117,7 @@ public class RequestContext {
 	 * Set the component in the {@link #contextMap}.
 	 *
 	 * @param component
-	 * @return
+	 * @return {@link RequestContext}
 	 */
 	public RequestContext setComponent(String component) {
 		return put(ContextField.COMPONENT, component);
@@ -126,7 +126,7 @@ public class RequestContext {
 	/**
 	 * Get the component.
 	 *
-	 * @return
+	 * @return component
 	 */
 	public String getComponent() {
 		return getString(ContextField.COMPONENT);
@@ -136,7 +136,7 @@ public class RequestContext {
 	 * Set the user in the {@link #contextMap}.
 	 *
 	 * @param user
-	 * @return
+	 * @return {@link RequestContext}
 	 */
 	public RequestContext setUser(String user) {
 		return put(ContextField.USER, user);
@@ -145,7 +145,7 @@ public class RequestContext {
 	/**
 	 * Get the user.
 	 *
-	 * @return
+	 * @return user
 	 */
 	public String getUser() {
 		return getString(ContextField.USER);
@@ -155,7 +155,7 @@ public class RequestContext {
 	 * Set the realm in the {@link #contextMap}.
 	 *
 	 * @param realm
-	 * @return
+	 * @return {@link RequestContext}
 	 */
 	public RequestContext setRealm(String realm) {
 		return put(ContextField.REALM, realm);
@@ -164,7 +164,7 @@ public class RequestContext {
 	/**
 	 * Get the realm.
 	 *
-	 * @return
+	 * @return realm
 	 */
 	public String getRealm() {
 		return getString(ContextField.REALM);
@@ -175,7 +175,7 @@ public class RequestContext {
 	 *
 	 * @param key
 	 * @param value
-	 * @return
+	 * @return {@link RequestContext}
 	 */
 	public RequestContext put(String key, String value) {
 		contextMap.put(key, value);
@@ -186,7 +186,7 @@ public class RequestContext {
 	 * Get a context property directly from the {@link #contextMap}.
 	 *
 	 * @param key
-	 * @return
+	 * @return Value of the context property as {@link String}
 	 */
 	public String getString(String key) {
 		return contextMap.get(key);
@@ -198,7 +198,7 @@ public class RequestContext {
 	 *
 	 * @param key
 	 * @param value
-	 * @return
+	 * @return {@link RequestContext}
 	 */
 	public RequestContext put(String key, Long value) {
 		String strValue = (value == null) ? null : Long.toString(value);
@@ -209,7 +209,7 @@ public class RequestContext {
 	 * Get a context property directly from the {@link #contextMap} converting it to {@link Long}.
 	 *
 	 * @param key
-	 * @return
+	 * @return Value of the context property as {@link Long}
 	 */
 	public Long getLong(String key) {
 		try {
@@ -225,7 +225,7 @@ public class RequestContext {
 	 *
 	 * @param key
 	 * @param value
-	 * @return
+	 * @return {@link RequestContext}
 	 */
 	public RequestContext put(String key, Boolean value) {
 		String strValue = (value == null) ? null : Boolean.toString(value);
@@ -236,7 +236,7 @@ public class RequestContext {
 	 * Get a context property directly from the {@link #contextMap} converting it to {@link Boolean}.
 	 *
 	 * @param key
-	 * @return
+	 * @return Value of the context property as {@link Boolean}.
 	 */
 	public Boolean getBoolean(String key) {
 		try {
@@ -249,7 +249,7 @@ public class RequestContext {
 	/**
 	 * Retrieve the whole {@link #contextMap}.
 	 *
-	 * @return
+	 * @return {@link Map} with all the context properties.
 	 */
 	public Map<String, String> getContextMap() {
 		return this.contextMap;
@@ -259,7 +259,7 @@ public class RequestContext {
 	/**
 	 * Retrieve the context from the reactive stream.
 	 *
-	 * @return
+	 * @return Reactive {@link RequestContext} from reactor context.
 	 */
 	public static Mono<RequestContext> context() {
 		return Mono.subscriberContext()

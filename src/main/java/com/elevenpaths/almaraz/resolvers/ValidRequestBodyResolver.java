@@ -34,32 +34,32 @@ import reactor.core.publisher.Mono;
  *
  * For application/json bodies (default):
  *
- * <code>
- * @RestController
+ * <pre>
+ * &#064;RestController
  * public class DemoController {
- *  	@RequestMapping(value="/demo", method=RequestMethod.POST)
- *  	public String demo(@ValidRequestBody("json-schema") TestType value) {
- *  		...
- *  	}
+ *   &#064;RequestMapping(value="/demo", method=RequestMethod.POST)
+ *   public String demo(&#064;ValidRequestBody("json-schema") TestType value) {
+ *     ...
+ *   }
  * }
- * </code>
+ * </pre>
  *
  * In application/x-www-form-urlencoded bodies, it is possible to use the "multi" boolean
- * parameter to specify if the {@link MultiValueMap<String,String>} obtained
+ * parameter to specify if the {@link MultiValueMap} obtained
  * from parsing the body is maintained (multi=true) or transformed into a
- * {@link Map<String,String>} (multi=false). Note that default value for "multi" is false. The
- * binding class needs to implement the set methods with a {@link List<String>} argument
+ * {@link Map} (multi=false). Note that default value for "multi" is false. The
+ * binding class needs to implement the set methods with a List argument
  * (multi=true) or a {@link String} argument (multi=false).
  *
- * <code>
- * @RestController
+ * <pre>
+ * &#064;RestController
  * public class DemoController {
- *		@RequestMapping(value="/demo2", method=RequestMethod.POST, consumes=MediaType.APPLICATION_FORM_URLENCODED_VALUE)
- *		public String demo2(@ValidRequestBody("json-schema-2") TestType value) {
- *			...
- *		}
+ *   &#064;RequestMapping(value="/demo2", method=RequestMethod.POST, consumes=MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+ *	 public String demo2(&#064;ValidRequestBody("json-schema-2") TestType value) {
+ *	   ...
+ *	 }
  * }
- * </code>
+ * </pre>
  *
  * @author Jorge Lorenzo <jorge.lorenzogallardo@telefonica.com>
  *
@@ -68,8 +68,13 @@ public class ValidRequestBodyResolver implements HandlerMethodArgumentResolver {
 
 	private static final ObjectMapper MAPPER = new ObjectMapper();
 
-	private JsonSchemaValidator validator;
+	private final JsonSchemaValidator validator;
 
+	/**
+	 * Constructor.
+	 *
+	 * @param validator
+	 */
 	public ValidRequestBodyResolver(JsonSchemaValidator validator) {
 		this.validator = validator;
 	}
@@ -99,6 +104,15 @@ public class ValidRequestBodyResolver implements HandlerMethodArgumentResolver {
 		}
 	}
 
+	/**
+	 * Read the request url encoded body (url encoded), validate it agains a JSON schema, and resolve it into valueType.
+	 *
+	 * @param exchange
+	 * @param schemaName
+	 * @param valueType
+	 * @param multi
+	 * @return resolved body
+	 */
 	protected Mono<Object> resolveUrlEncodedBody(ServerWebExchange exchange, String schemaName, Class<?> valueType, boolean multi) {
 		return exchange.getFormData().map(formData -> multi ? formData : toSingleValueMap(formData))
 				.map(formData -> {
@@ -114,6 +128,14 @@ public class ValidRequestBodyResolver implements HandlerMethodArgumentResolver {
 				});
 	}
 
+	/**
+	 * Read the request JSON body, validate it agains a JSON schema, and resolve it into valueType.
+	 *
+	 * @param exchange
+	 * @param schemaName
+	 * @param valueType
+	 * @return resolved body
+	 */
 	protected Mono<Object> resolveJsonBody(ServerWebExchange exchange, String schemaName, Class<?> valueType) {
 		return getBodyInputStream(exchange).map(is -> {
 			try {
@@ -128,6 +150,15 @@ public class ValidRequestBodyResolver implements HandlerMethodArgumentResolver {
 		});
 	}
 
+	/**
+	 * Read the request query parameters, validate it agains a JSON schema, and resolve it into valueType.
+	 *
+	 * @param exchange
+	 * @param schemaName
+	 * @param valueType
+	 * @param multi
+	 * @return resolved query parameters
+	 */
 	protected Mono<Object> resolveQueryParams(ServerWebExchange exchange, String schemaName, Class<?> valueType, boolean multi) {
 		MultiValueMap<String, String> queryParams = exchange.getRequest().getQueryParams();
 		try {
@@ -142,6 +173,12 @@ public class ValidRequestBodyResolver implements HandlerMethodArgumentResolver {
 
 	}
 
+	/**
+	 * Convert a {@link MultiValueMap} into a {@link Map}.
+	 *
+	 * @param map
+	 * @return {@link Map}
+	 */
 	protected Map<String, String> toSingleValueMap(MultiValueMap<String, String> map) {
 		map.forEach((k, v) -> {
 			if (v.size() != 1) {
@@ -151,6 +188,15 @@ public class ValidRequestBodyResolver implements HandlerMethodArgumentResolver {
 		return map.toSingleValueMap();
 	}
 
+	/**
+	 * Validate a JSON node against a JSON schema and marshal it into valueType type.
+	 *
+	 * @param schemaName
+	 * @param node
+	 * @param valueType
+	 * @return object after marshalling into valueType
+	 * @throws IOException
+	 */
 	protected Object validateAndMarshal(String schemaName, JsonNode node, Class<?> valueType) throws IOException {
 		validator.validate(schemaName, node);
 		if (valueType == JsonNode.class) {
@@ -159,6 +205,12 @@ public class ValidRequestBodyResolver implements HandlerMethodArgumentResolver {
 		return MAPPER.treeToValue(node, valueType);
 	}
 
+	/**
+	 * Read the body from the {@link ServerWebExchange}.
+	 *
+	 * @param exchange
+	 * @return reactive {@link InputStream}
+	 */
 	protected Mono<InputStream> getBodyInputStream(ServerWebExchange exchange) {
 		return exchange.getRequest().getBody()
 				.map(DataBuffer::asInputStream)

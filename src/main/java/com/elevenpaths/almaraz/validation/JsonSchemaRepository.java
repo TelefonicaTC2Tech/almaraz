@@ -35,7 +35,7 @@ public class JsonSchemaRepository {
 	 * Get the path to the JSON schema.
 	 *
 	 * @param schemaName
-	 * @return
+	 * @return path to the JSON schema files
 	 */
 	protected String getSchemaPath(String schemaName) {
 		return String.format("/schemas/%s.json", schemaName);
@@ -46,7 +46,7 @@ public class JsonSchemaRepository {
 	 * and parsing it into a {@link JsonSchema} instance.
 	 *
 	 * @param schemaName
-	 * @return
+	 * @return {@link JsonSchema}
 	 */
 	protected JsonSchema loadSchema(String schemaName) {
 		String schemaPath = getSchemaPath(schemaName);
@@ -65,7 +65,7 @@ public class JsonSchemaRepository {
 	 * to avoid parsing them multiple times.
 	 *
 	 * @param schemaName
-	 * @return
+	 * @return {@link JsonSchema}
 	 */
 	public JsonSchema getJsonSchema(String schemaName) {
 		if (schemas.containsKey(schemaName)) {

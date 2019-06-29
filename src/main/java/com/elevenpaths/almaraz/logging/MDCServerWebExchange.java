@@ -31,7 +31,7 @@ public class MDCServerWebExchange {
 	 * Get the method of the exchange request.
 	 *
 	 * @param exchange
-	 * @return
+	 * @return request method
 	 */
 	public static String getMethod(ServerWebExchange exchange) {
 		try {
@@ -45,7 +45,7 @@ public class MDCServerWebExchange {
 	 * Get the path of the exchange request.
 	 *
 	 * @param exchange
-	 * @return
+	 * @return request path
 	 */
 	public static String getPath(ServerWebExchange exchange) {
 		try {
@@ -59,7 +59,7 @@ public class MDCServerWebExchange {
 	 * Get the remote address of the exchange request.
 	 *
 	 * @param exchange
-	 * @return
+	 * @return request remote address
 	 */
 	public static String getRemoteAddress(ServerWebExchange exchange) {
 		try {
@@ -73,7 +73,7 @@ public class MDCServerWebExchange {
 	 * Get the status code of the exchange response.
 	 *
 	 * @param exchange
-	 * @return
+	 * @return response status code
 	 */
 	public static String getStatusCode(ServerWebExchange exchange) {
 		try {

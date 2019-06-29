@@ -120,7 +120,7 @@ public class RequestContextWebFilter implements WebFilter {
 	 * this context with the transaction ID and correlator using {@link #initRequestContext(RequestContext, ServerHttpRequest)}.
 	 *
 	 * @param request
-	 * @return
+	 * @return {@link RequestContext}
 	 */
 	protected RequestContext buildRequestContext(ServerHttpRequest request) {
 		RequestContext requestContext = newRequestContext();
@@ -130,7 +130,7 @@ public class RequestContextWebFilter implements WebFilter {
 	/**
 	 * Create a new instance of {@link RequestContext} (or subclass) using the {@link #contextSupplier}.
 	 *
-	 * @return
+	 * @return {@link RequestContext}
 	 */
 	protected RequestContext newRequestContext() {
 		return contextSupplier.get();
@@ -143,7 +143,7 @@ public class RequestContextWebFilter implements WebFilter {
 	 *
 	 * @param requestContext
 	 * @param request
-	 * @return
+	 * @return {@link RequestContext}
 	 */
 	protected RequestContext initRequestContext(RequestContext requestContext, ServerHttpRequest request) {
 		String transactionId = getTransactionId();
@@ -156,7 +156,7 @@ public class RequestContextWebFilter implements WebFilter {
 	/**
 	 * Get the transaction ID using a random UUID.
 	 *
-	 * @return
+	 * @return transaction ID
 	 */
 	protected String getTransactionId() {
 		return UUID.randomUUID().toString();
@@ -168,7 +168,7 @@ public class RequestContextWebFilter implements WebFilter {
 	 *
 	 * @param request
 	 * @param defaultCorrelator
-	 * @return
+	 * @return correlator
 	 */
 	protected String getCorrelator(ServerHttpRequest request, String defaultCorrelator) {
 		String correlator = request.getHeaders().getFirst(correlatorHeader);

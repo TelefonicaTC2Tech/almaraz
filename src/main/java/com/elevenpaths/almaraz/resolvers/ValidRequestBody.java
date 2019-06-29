@@ -11,14 +11,14 @@ import java.util.Map;
 import org.springframework.util.MultiValueMap;
 
 /**
- * Annotation to resolve a request body into a type (as @RequestBody) or query parameters
+ * Annotation to resolve a request body into a type (as {@literal @}RequestBody) or query parameters
  * but including validation against a JSON schema.
  *
  * For example:
  * <code>
- * @RestController
+ * {@literal @}RestController
  * public class DemoController {
- *  	@PostMapping(value = "/demo")
+ *  	{@literal @}PostMapping(value = "/demo")
  *  	public String demo(@ValidRequestBody("json-schema") TestType value) {
  *  		...
  *  	}
@@ -42,7 +42,7 @@ public @interface ValidRequestBody {
 	/**
 	 * Name of the JSON schema required to validate the body.
 	 *
-	 * @return
+	 * @return json schema name
 	 */
 	String value() default "";
 
@@ -51,14 +51,14 @@ public @interface ValidRequestBody {
 	 * If set to false (default), it is checked that MultiValueMap does not include multiple values
 	 * for the same element. It is converted the MultiValueMap<String, String> into Map<String, String>.
 	 *
-	 * @return
+	 * @return false if {@link MultiValueMap} is converted to {@link Map}
 	 */
 	boolean multi() default false;
 
 	/**
 	 * Process the query parameters of the request, instead of the request body.
 	 *
-	 * @return
+	 * @return true to validate query parameters
 	 */
 	boolean query() default false;
 }

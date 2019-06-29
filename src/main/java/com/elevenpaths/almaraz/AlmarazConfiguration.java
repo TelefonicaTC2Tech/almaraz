@@ -8,7 +8,9 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.core.annotation.Order;
 import org.springframework.web.reactive.config.WebFluxConfigurer;
 import org.springframework.web.reactive.result.method.annotation.ArgumentResolverConfigurer;
+import org.springframework.web.server.WebFilter;
 
+import com.elevenpaths.almaraz.context.RequestContext;
 import com.elevenpaths.almaraz.resolvers.ValidRequestBody;
 import com.elevenpaths.almaraz.resolvers.ValidRequestBodyResolver;
 import com.elevenpaths.almaraz.validation.JsonSchemaRepository;
@@ -67,7 +69,7 @@ public class AlmarazConfiguration implements WebFluxConfigurer {
 	/**
 	 * Get the JSON Schema validator.
 	 *
-	 * @return
+	 * @return JsonSchemaValidator
 	 */
 	@Bean
 	public JsonSchemaValidator getJsonSchemaValidator() {
@@ -78,7 +80,7 @@ public class AlmarazConfiguration implements WebFluxConfigurer {
 	 * Get the {@link RequestContextWebFilter} that generates the reactive context
 	 * and initializes it with the correlator and transactionId.
 	 *
-	 * @return
+	 * @return {@link WebFilter} to initialize the reactive context with {@link RequestContext}.
 	 */
 	@Order(10)
 	@Bean
@@ -86,6 +88,11 @@ public class AlmarazConfiguration implements WebFluxConfigurer {
 		return new RequestContextWebFilter();
 	}
 
+	/**
+	 * Get the {@link LoggerWebFilter} that logs the request and response.
+	 *
+	 * @return {@link WebFilter} to log the request and response.
+	 */
 	@Order(20)
 	@Bean
 	public LoggerWebFilter getLoggerWebFilter() {
@@ -96,7 +103,7 @@ public class AlmarazConfiguration implements WebFluxConfigurer {
 	 * Get the {@link ErrorWebFilter} that handles exceptions to generate an
 	 * error response.
 	 *
-	 * @return
+	 * @return {@link WebFilter} to handle errors.
 	 */
 	@Order(30)
 	@Bean
@@ -108,7 +115,7 @@ public class AlmarazConfiguration implements WebFluxConfigurer {
 	 * Get the {@link CompleteLocationHeaderWebFilter} that updates the location header
 	 * if it is a relative path.
 	 *
-	 * @return
+	 * @return {@link WebFilter} to complete the location HTTP header.
 	 */
 	@Order(40)
 	@Bean
@@ -119,7 +126,7 @@ public class AlmarazConfiguration implements WebFluxConfigurer {
 	/**
 	 * Get {@link BasePathWebFilter} to configure a {@link #basePath} to the REST resources.
 	 *
-	 * @return
+	 * @return {@link WebFilter} to configure an API base path (also know as context path).
 	 */
 	@Order(50)
 	@Bean

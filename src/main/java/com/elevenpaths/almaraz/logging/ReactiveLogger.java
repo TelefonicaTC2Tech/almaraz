@@ -52,7 +52,7 @@ public class ReactiveLogger {
 	 *
 	 * @param isSignal
 	 * @param log
-	 * @return
+	 * @return consumer of the reactive signal to log
 	 */
 	public static <T> Consumer<Signal<T>> logOnSignal(Predicate<Signal<T>> isSignal, Consumer<Signal<T>> log) {
 		return signal -> {
@@ -73,7 +73,7 @@ public class ReactiveLogger {
 	 * Logger triggered with the signal type {@link SignalType#ON_NEXT}.
 	 *
 	 * @param log
-	 * @return
+	 * @return consumer of the reactive signal to log
 	 */
 	public static <T> Consumer<Signal<T>> logOnNext(Consumer<T> log) {
 		return logOnSignal(
@@ -85,7 +85,7 @@ public class ReactiveLogger {
 	 * Logger triggered with the signal type {@link SignalType#ON_COMPLETE}.
 	 *
 	 * @param log
-	 * @return
+	 * @return consumer of the reactive signal to log
 	 */
 	public static <T> Consumer<Signal<T>> logOnComplete(Runnable log) {
 		return logOnSignal(
@@ -97,7 +97,7 @@ public class ReactiveLogger {
 	 * Logger triggered with the signal type {@link SignalType#ON_ERROR}.
 	 *
 	 * @param log
-	 * @return
+	 * @return consumer of the reactive signal to log
 	 */
 	public static <T> Consumer<Signal<T>> logOnError(Consumer<Throwable> log) {
 		return logOnSignal(

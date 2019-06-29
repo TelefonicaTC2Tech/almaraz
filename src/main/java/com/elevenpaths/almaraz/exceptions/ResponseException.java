@@ -93,7 +93,7 @@ public class ResponseException extends RuntimeException {
 	 *
 	 * @param headerName
 	 * @param headerValue
-	 * @return
+	 * @return {@link ResponseException}
 	 */
 	public ResponseException addHeader(String headerName, String headerValue) {
 		if (headers == null) {
@@ -108,7 +108,7 @@ public class ResponseException extends RuntimeException {
 	 *
 	 * @param key
 	 * @param value
-	 * @return
+	 * @return {@link ResponseException}
 	 */
 	public ResponseException addDetail(String key, Object value) {
 		if (detailMap == null) {
