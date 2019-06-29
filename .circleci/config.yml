@@ -14,7 +14,7 @@ jobs:
       - checkout
       - run:
           command: |
-            echo $GPG_SECRET_KEYS | base64 --decode | $GPG_EXECUTABLE --import
+            echo $GPG_SECRET_KEYS | base64 --decode | $GPG_EXECUTABLE --import --no-tty --batch --yes
             echo $GPG_OWNERTRUST | base64 --decode | $GPG_EXECUTABLE --import-ownertrust
       - restore_cache:
           key: almaraz-{{ checksum "pom.xml" }}
