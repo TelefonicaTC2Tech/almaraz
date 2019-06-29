@@ -26,8 +26,23 @@ jobs:
       - run: mvn install --settings .circleci/settings.xml
       - store_test_results:
           path: target/surefire-reports
+  build_example:
+    description: |
+      Checkout, build, and test the almaraz example
+    executor: java
+    working_directory: example
+    steps:
+      - restore_cache:
+          key: almaraz-example-{{ checksum "pom.xml" }}
+      - run: mvn dependency:go-offline
+      - save_cache:
+          paths:
+            - ~/.m2
+          key: almaraz-example-{{ checksum "pom.xml" }}
+      - run: mvn install
 
 workflows:
   build:
     jobs:
       - build
+      - build_example
