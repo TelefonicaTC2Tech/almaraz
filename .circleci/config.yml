@@ -15,6 +15,6 @@ jobs:
 workflows:
   build:
     jobs:
-      - pgp-import
+      - pgp_import
       - maven/test:
           settings_file: .circleci/settings.xml
