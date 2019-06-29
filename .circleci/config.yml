@@ -13,14 +13,14 @@ jobs:
     executor: java
     steps:
       - checkout
-      - make import-keys
-      - restore_cache:
-          key: almaraz-{{ checksum "pom.xml" }}
-      - make build
-      - save_cache:
-          paths:
-            - ~/.m2
-          key: almaraz-{{ checksum "pom.xml" }}
+      - run: make import-keys
+      # - restore_cache:
+      #     key: almaraz-{{ checksum "pom.xml" }}
+      - run: make build
+      # - save_cache:
+      #     paths:
+      #       - ~/.m2
+      #     key: almaraz-{{ checksum "pom.xml" }}
       - store_test_results:
           path: target/surefire-reports
       # - run:
