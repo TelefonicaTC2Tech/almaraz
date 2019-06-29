@@ -32,8 +32,8 @@ jobs:
     executor: java
     working_directory: ~/example
     steps:
-      - checkout
       - run: ls -al
+      - run: pwd
       - restore_cache:
           key: almaraz-example-{{ checksum "pom.xml" }}
       - run: mvn dependency:go-offline
@@ -47,5 +47,5 @@ jobs:
 workflows:
   build:
     jobs:
-      # - build
+      - build
       - build_example
