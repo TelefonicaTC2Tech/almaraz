@@ -1,20 +1,33 @@
 version: 2.1
 
-orbs:
-  maven: circleci/maven@0.0.8
+executors:
+  java:
+    docker:
+      - image: circleci/openjdk:8-jdk-node
 
 jobs:
-  pgp_import:
-    executor: maven
+  build:
+    description: |
+      Checkout, build, test, and upload test results
+    executor: java
     steps:
+      - checkout
       - run:
           command: |
             echo $GPG_SECRET_KEYS | base64 --decode | $GPG_EXECUTABLE --import
             echo $GPG_OWNERTRUST | base64 --decode | $GPG_EXECUTABLE --import-ownertrust
+      - restore_cache:
+          key: almaraz-{{ checksum "pom.xml" }}
+      - run: mvn dependency:go-offline --settings .circleci/settings.xml
+      - save_cache:
+          paths:
+            - ~/.m2
+          key: almaraz-{{ checksum "pom.xml" }}
+      - run: mvn install --settings .circleci/settings.xml
+      - store_test_results:
+          path: target/surefire-reports
 
 workflows:
   build:
     jobs:
-      - pgp_import
-      - maven/test:
-          settings_file: .circleci/settings.xml
+      - build
