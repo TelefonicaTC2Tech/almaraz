@@ -46,6 +46,12 @@ import reactor.util.context.Context;
 public class ReactiveLogger {
 
 	/**
+	 * Private constructor. Only static methods.
+	 */
+	private ReactiveLogger() {
+	}
+
+	/**
 	 * Low level logger that considers the reactive signal to determine if the logger must be invoked or not.
 	 * If the logger is to be invoked, then the {@link RequestContext} is extracted from the reactive context
 	 * to update MDC with all the context properties. The MDC is cleared afterwards.

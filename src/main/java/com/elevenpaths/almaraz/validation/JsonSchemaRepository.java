@@ -22,7 +22,7 @@ public class JsonSchemaRepository {
 	/**
 	 * Cache of {@link JsonSchema}.
 	 */
-	private Map<String, JsonSchema> schemas;
+	private final Map<String, JsonSchema> schemas;
 
 	/**
 	 * Constructor.

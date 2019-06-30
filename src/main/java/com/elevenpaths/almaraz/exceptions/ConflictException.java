@@ -23,7 +23,7 @@ public class ConflictException extends ResponseException {
 	 * Default constructor.
 	 */
 	public ConflictException() {
-		super(HttpStatus.CONFLICT, null, null);
+		this(null);
 	}
 
 	/**

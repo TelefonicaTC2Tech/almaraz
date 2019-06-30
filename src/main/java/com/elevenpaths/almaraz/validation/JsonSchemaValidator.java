@@ -20,7 +20,7 @@ import com.networknt.schema.ValidationMessage;
  */
 public class JsonSchemaValidator {
 
-	private JsonSchemaRepository repository;
+	private final JsonSchemaRepository repository;
 
 	public JsonSchemaValidator(JsonSchemaRepository repository) {
 		this.repository = repository;

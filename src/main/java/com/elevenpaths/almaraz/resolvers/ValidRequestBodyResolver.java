@@ -118,9 +118,6 @@ public class ValidRequestBodyResolver implements HandlerMethodArgumentResolver {
 				.map(formData -> {
 					try {
 						JsonNode node = MAPPER.valueToTree(formData);
-						if (node == null) {
-							throw new InvalidRequestException("expected urlencoded body");
-						}
 						return validateAndMarshal(schemaName, node, valueType);
 					} catch (IOException e) {
 						throw new InvalidRequestException("invalid urlencoded body", e);
@@ -163,9 +160,6 @@ public class ValidRequestBodyResolver implements HandlerMethodArgumentResolver {
 		MultiValueMap<String, String> queryParams = exchange.getRequest().getQueryParams();
 		try {
 			JsonNode node = MAPPER.valueToTree(multi ? queryParams : toSingleValueMap(queryParams));
-			if (node == null) {
-				throw new InvalidRequestException("expected query params");
-			}
 			return Mono.just(validateAndMarshal(schemaName, node, valueType));
 		} catch (IOException e) {
 			throw new InvalidRequestException("invalid query params", e);

@@ -59,7 +59,7 @@ public class ResponseException extends RuntimeException {
 	 * @param status
 	 */
 	public ResponseException(HttpStatus status) {
-		this(status, null, null, null);
+		this(status, null, null);
 	}
 
 	/**
