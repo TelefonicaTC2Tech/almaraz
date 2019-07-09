@@ -32,7 +32,8 @@ jobs:
                  -Z || echo 'Codecov upload failed'
       - run:
           name: deploy to central repository (if tag)
-          command: [ -z "${CIRCLE_TAG}" ] || make deploy
+          command: |
+            [ -z "${CIRCLE_TAG}" ] || make deploy
 
 workflows:
   build:
