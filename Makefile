@@ -26,7 +26,7 @@ Commands:
 endef
 export help
 
-.PHONY: help import-keys set-version build
+.PHONY: help import-keys set-version build publish
 
 help:
 	@echo "$$help"
