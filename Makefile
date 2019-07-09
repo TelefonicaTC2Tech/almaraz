@@ -59,9 +59,6 @@ build-example:
 	$(info) "Building almaraz example"
 	cd example && mvn install
 
-publish:
-	$(info) "Publishing..."
-
 deploy: check-SONATYPE_USER check-SONATYPE_PASSWORD
 	$(info) "Publishing almaraz"
-	# mvn deploy --settings .circleci/settings.xml
+	mvn deploy --settings .circleci/settings.xml
