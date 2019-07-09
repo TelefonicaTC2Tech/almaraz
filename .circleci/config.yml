@@ -30,8 +30,28 @@ jobs:
                  -n "${CIRCLE_BUILD_NUM}" \
                  -F "unittests" \
                  -Z || echo 'Codecov upload failed'
+  publish:
+    description: |
+      Publish almaraz library in maven central repository
+    executor: java
+    steps:
+      - run: make publish
 
 workflows:
   build:
     jobs:
       - build
+  release:
+    jobs:
+      - build:
+        filters:
+          branches:
+            only: master
+          tags:
+            only: /[0-9]+\.[0-9]+\.[0-9]+/
+      - publish:
+        requires:
+          - build
+        filters:
+          tags:
+            only: /[0-9]+\.[0-9]+\.[0-9]+/

@@ -9,15 +9,20 @@ info := @printf "\033[32;01m%s\033[0m\n"
 define help
 Usage: make <command>
 Commands:
-  help:         Show this help information
-  import-keys:  Importing PGP keys to sign the maven artifact
-                Environment variables:
-				 - GPG_SECRET_KEYS (secret key to sign the maven artifact)
-				 - GPG_OWNERTRUST (trust level for the secret key)
-  build:        Build almaraz and almaraz example
-  set-version:  Update pom.xml for almaraz and almaraz example with new version
-                Environment variables:
-				 - VERSION (new version of almaraz library)
+  help:          Show this help information
+  import-keys:   Importing PGP keys to sign the maven artifact
+                 Environment variables:
+                  - GPG_SECRET_KEYS (secret key to sign the maven artifact)
+                  - GPG_OWNERTRUST (trust level for the secret key)
+  set-version:   Update pom.xml for almaraz and almaraz example with new version
+                 Environment variables:
+                  - VERSION (new version of almaraz library)
+  build:         Build almaraz
+  build-example: Build almaraz example
+  publish:       Publish the library in the maven central repository
+                 Environment variables:
+                  - SONATYPE_USER
+				  - SONATYPE_PASSWORD
 endef
 export help
 
@@ -47,5 +52,11 @@ set-version: check-VERSION
 build:
 	$(info) "Building almaraz"
 	mvn install --settings .circleci/settings.xml
-	# $(info) "Building almaraz example"
-	# cd example && mvn package
+
+build-example:
+	$(info) "Building almaraz example"
+	cd example && mvn install
+
+publish: check-SONATYPE_USER check-SONATYPE_PASSWORD
+	$(info) "Publishing almaraz"
+	mvn deploy --settings .circleci/settings.xml
