@@ -1,7 +1,9 @@
-GPG_EXECUTABLE  ?= gpg
-GPG_SECRET_KEYS ?=
-GPG_OWNERTRUST  ?=
-VERSION         ?=
+GPG_EXECUTABLE    ?= gpg
+GPG_SECRET_KEYS   ?=
+GPG_OWNERTRUST    ?=
+VERSION           ?=
+SONATYPE_USER     ?=
+SONATYPE_PASSWORD ?=
 
 # Functions
 info := @printf "\033[32;01m%s\033[0m\n"
@@ -19,14 +21,14 @@ Commands:
                   - VERSION (new version of almaraz library)
   build:         Build almaraz
   build-example: Build almaraz example
-  publish:       Publish the library in the maven central repository
+  deploy:       Publish the library in the maven central repository
                  Environment variables:
                   - SONATYPE_USER
 				  - SONATYPE_PASSWORD
 endef
 export help
 
-.PHONY: help import-keys set-version build publish
+.PHONY: help import-keys set-version build deploy
 
 help:
 	@echo "$$help"
@@ -57,6 +59,9 @@ build-example:
 	$(info) "Building almaraz example"
 	cd example && mvn install
 
-publish: check-SONATYPE_USER check-SONATYPE_PASSWORD
+publish:
+	$(info) "Publishing..."
+
+deploy: check-SONATYPE_USER check-SONATYPE_PASSWORD
 	$(info) "Publishing almaraz"
-	mvn deploy --settings .circleci/settings.xml
+	# mvn deploy --settings .circleci/settings.xml

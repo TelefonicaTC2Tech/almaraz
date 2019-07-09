@@ -35,6 +35,8 @@ jobs:
       Publish almaraz library in maven central repository
     executor: java
     steps:
+      - run: pwd
+      - run: ls -al
       - run: make publish
 
 workflows:
@@ -45,15 +47,15 @@ workflows:
     jobs:
       - build:
           filters:
-            branches:
-              ignore: /.*/
+            # branches:
+            #   ignore: /.*/
             tags:
               only: /[0-9]+\.[0-9]+\.[0-9]+/
       - publish:
           requires:
             - build
           filters:
-            branches:
-              ignore: /.*/
+            # branches:
+            #   ignore: /.*/
             tags:
               only: /[0-9]+\.[0-9]+\.[0-9]+/
