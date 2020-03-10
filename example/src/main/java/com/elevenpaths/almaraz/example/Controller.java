@@ -2,7 +2,7 @@
  * Copyright (c) Telefonica I+D. All rights reserved.
  */
 
-package com.elevenpaths.almaraz.example.controllers;
+package com.elevenpaths.almaraz.example;
 
 import java.net.URI;
 import java.util.Map;
@@ -17,8 +17,6 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.reactive.function.client.WebClient;
 
 import com.elevenpaths.almaraz.context.RequestContext;
-import com.elevenpaths.almaraz.example.model.User;
-import com.elevenpaths.almaraz.example.webclient.HttpbinWebClient;
 import com.elevenpaths.almaraz.logging.ReactiveLogger;
 import com.elevenpaths.almaraz.resolvers.ValidRequestBody;
 

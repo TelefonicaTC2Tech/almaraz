@@ -2,7 +2,7 @@
  * Copyright (c) Telefonica I+D. All rights reserved.
  */
 
-package com.elevenpaths.almaraz.example.configuration;
+package com.elevenpaths.almaraz.example;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.info.BuildProperties;
