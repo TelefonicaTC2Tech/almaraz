@@ -9,6 +9,7 @@ import org.springframework.boot.info.BuildProperties;
 import org.springframework.context.annotation.Configuration;
 
 import com.elevenpaths.almaraz.AlmarazConfiguration;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
  * Spring {@link Configuration} extending {@link AlmarazConfiguration} to include the default middlewares
