@@ -2,7 +2,7 @@
  * Copyright (c) Telefonica I+D. All rights reserved.
  */
 
-package com.elevenpaths.almaraz.example;
+package com.elevenpaths.almaraz.example.model;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 

@@ -2,7 +2,7 @@
  * Copyright (c) Telefonica I+D. All rights reserved.
  */
 
-package com.elevenpaths.almaraz.example;
+package com.elevenpaths.almaraz.example.webclient;
 
 import java.util.Map;
 
@@ -14,6 +14,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.BodyInserters;
 import org.springframework.web.reactive.function.client.WebClient;
 
+import com.elevenpaths.almaraz.example.model.User;
 import com.elevenpaths.almaraz.webclientfilters.CorrelatorWebClientFilter;
 import com.elevenpaths.almaraz.webclientfilters.LoggerWebClientFilter;
 
