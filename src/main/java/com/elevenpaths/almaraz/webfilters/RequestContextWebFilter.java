@@ -108,7 +108,7 @@ public class RequestContextWebFilter implements WebFilter {
 		ServerHttpRequest request = exchange.getRequest();
 		RequestContext requestContext = buildRequestContext(request);
 		exchange.getResponse().beforeCommit(() -> {
-			exchange.getResponse().getHeaders().add(correlatorHeader, requestContext.getCorrelator());
+			exchange.getResponse().getHeaders().set(correlatorHeader, requestContext.getCorrelator());
 			return Mono.empty();
 		});
 		return chain.filter(exchange)
