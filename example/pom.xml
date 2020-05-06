@@ -10,7 +10,7 @@
 	</parent>
 	<groupId>com.elevenpaths.almaraz</groupId>
 	<artifactId>almaraz-example</artifactId>
-	<version>0.2.1</version>
+	<version>0.2.2</version>
 	<name>almaraz-example</name>
 	<description>Example of a WebFlux server leveraging almaraz</description>
 
@@ -27,7 +27,7 @@
 		<dependency>
 			<groupId>com.elevenpaths.almaraz</groupId>
 			<artifactId>almaraz</artifactId>
-			<version>0.2.1</version>
+			<version>0.2.2</version>
 		</dependency>
 		<dependency>
 			<groupId>net.logstash.logback</groupId>
