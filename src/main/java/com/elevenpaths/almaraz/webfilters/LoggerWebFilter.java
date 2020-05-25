@@ -33,11 +33,6 @@ import reactor.core.publisher.Mono;
 public class LoggerWebFilter implements WebFilter {
 
 	/**
-	 * X-Forwarded-For header.
-	 */
-	public static final String X_FORWARDED_FOR_HEARDER = "X-Forwarded-For";
-
-	/**
 	 * Web filter implementation to write a log entry when the request is received and
 	 * another log entry when the response is completed.
 	 */
@@ -60,11 +55,9 @@ public class LoggerWebFilter implements WebFilter {
 	 * @param exchange
 	 */
 	protected void logRequest(ServerWebExchange exchange) {
-		String xForwardedfor = exchange.getRequest().getHeaders().getFirst(X_FORWARDED_FOR_HEARDER);
-		String address = (xForwardedfor == null) ?  MDCServerWebExchange.getRemoteAddress(exchange) : xForwardedfor.split(", ")[0];
 		MDC.put(ContextField.METHOD, MDCServerWebExchange.getMethod(exchange));
 		MDC.put(ContextField.PATH, MDCServerWebExchange.getPath(exchange));
-		MDC.put(ContextField.ADDRESS, address);
+		MDC.put(ContextField.ADDRESS, MDCServerWebExchange.getRemoteAddress(exchange));
 		log.info("Request");
 	}
 

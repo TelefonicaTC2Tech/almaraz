@@ -21,6 +21,11 @@ public class MDCServerWebExchange {
 	public static final String START_TIMESTAMP = "startTimestamp";
 
 	/**
+	 * X-Forwarded-For header name.
+	 */
+	public static final String X_FORWARDED_FOR_HEADER = "X-Forwarded-For";
+
+	/**
 	 * Private constructor.
 	 * Only static functions.
 	 */
@@ -57,13 +62,46 @@ public class MDCServerWebExchange {
 
 	/**
 	 * Get the remote address of the exchange request.
+	 * If the request contains a X-Forwarded-For HTTP header, it returns the first address. Otherwise, it returns
+	 * the remote address obtained from TCP/IP.
 	 *
 	 * @param exchange
 	 * @return request remote address
 	 */
 	public static String getRemoteAddress(ServerWebExchange exchange) {
+		String address = getRemoteAddressFromXFF(exchange);
+		if (address == null) {
+			address = getRemoteAddressFromTCP(exchange);
+		}
+		return address;
+	}
+
+	/**
+	 * Get the remote address of the exchange request from TCP/IP protocol.
+	 * Note that this address may not correspond to the client if there is any intermediary (e.g. a nginx proxy).
+	 *
+	 * @param exchange
+	 * @return request remote address
+	 */
+	public static String getRemoteAddressFromTCP(ServerWebExchange exchange) {
 		try {
 			return exchange.getRequest().getRemoteAddress().getAddress().toString();
+		} catch (Exception e) {
+			return null;
+		}
+	}
+
+	/**
+	 * Get the remote address of the exchange request from the X-Forwarded-For HTTP header.
+	 * If X-Forwarded-For header is not present, it returns null.
+	 * If X-Forwarded-For header contains several elements, it returns the first element.
+	 *
+	 * @param exchange
+	 * @return request remote address from X-Forwarded-For HTTP header
+	 */
+	public static String getRemoteAddressFromXFF(ServerWebExchange exchange) {
+		try {
+			return exchange.getRequest().getHeaders().getValuesAsList(X_FORWARDED_FOR_HEADER).get(0);
 		} catch (Exception e) {
 			return null;
 		}

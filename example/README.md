@@ -49,35 +49,6 @@ Logs
 {"time":"2019-06-17T11:54:18.390+00:00","lvl":"INFO","logger":"com.elevenpaths.almaraz.webfilters.LoggerWebFilter","corr":"aef3619f-c6af-43ed-83f6-349ff3831e36","trans":"aef3619f-c6af-43ed-83f6-349ff3831e36","msg":"Response","svc":"almaraz-example","status":201,"latency":379}
 ```
 
-## Validating and binding a JSON request with X-Forwarded-For header
-
-If X-Forwarded-For header is present (because the request is redirected through an HTTP proxy or load balancer) it is used to get the origin address.
-
-Request
-
-```sh
-curl -v -X POST -H 'Content-Type: application/json' -H 'X-Forwarded-For: 127.0.0.1, 127.0.0.2' -d '{"name": "jorge", "country": "es"}' http://localhost:8080/api/users
-```
-
-Response
-
-```http
-HTTP/1.1 201 Created
-Content-Type: application/json;charset=UTF-8
-Content-Length: 75
-Unica-Correlator: e9c04578-5123-452f-80e2-5ca40323b93a
-Location: http://localhost:8080/api/users/160fcbf5-80a7-4c99-b2cf-caf1108d7ff6    
-
-{"id":"160fcbf5-80a7-4c99-b2cf-caf1108d7ff6","name":"jorge","country":"es"}
-```
-
-Logs
-
-```json
-{"time":"2020-05-25T07:03:30.323Z","lvl":"INFO","logger":"com.elevenpaths.almaraz.webfilters.LoggerWebFilter","path":"/api/users","corr":"e9c04578-5123-452f-80e2-5ca40323b93a","address":"127.0.0.1","method":"POST","trans":"e9c04578-5123-452f-80e2-5ca40323b93a","msg":"Request","svc":"almaraz-example"}
-{"time":"2020-05-25T07:03:30.325Z","lvl":"INFO","logger":"com.elevenpaths.almaraz.webfilters.LoggerWebFilter","corr":"e9c04578-5123-452f-80e2-5ca40323b93a","trans":"e9c04578-5123-452f-80e2-5ca40323b93a","msg":"Response","svc":"almaraz-example","status":201,"latency":2}
-```
-
 ## Validating and binding a URL encoded request
 
 Request

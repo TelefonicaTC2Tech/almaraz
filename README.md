@@ -208,7 +208,7 @@ Almaraz provides a set of Spring WebFlux [WebFilters](https://docs.spring.io/spr
 | ---------- | ----- | ----------- |
 | VersionWebFilter | 5 | It listens to a GET request to `/version` path (the path is configurable) to reply a JSON body with the version of the application. The version is passed with a Spring BuildProperties object. This webfilter has the highest order to avoid logging this request, especially if it is used as a keep-alive check. |
 | RequestContextWebFilter | 10 | It initializes the `RequestContext` with the correlator and transactionId. This instance is stored in the reactive context. |
-| LoggerWebFilter | 20 |  It logs the request and response with contextual log information. |
+| LoggerWebFilter | 20 |  It logs the request and response with contextual log information. The request context contains: `address` (remote IP address; it supports the X-Forwarded-For header), `method`(HTTP method), and `path`(HTTP resource path). The response context contains: `status` (HTTP response status code) and `latency` (time, in milliseconds, required to process the request). |
 | ErrorWebFilter | 30 |  It handles any exception to build up an error response. |
 | CompleteLocationHeaderWebFilter | 40 |  If the response contains a location header with a relative path, then it modifies the header to make it absolute. This webfilter simplifies the controllers so that they only need to add the resource identifier in the location header when the resource is created. |
 | BasePathWebFilter | 50 |  It supports the configuration of a base path (aka context path). The controllers would process the request path without the base path. |

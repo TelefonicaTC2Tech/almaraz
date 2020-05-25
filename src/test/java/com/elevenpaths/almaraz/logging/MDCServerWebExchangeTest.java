@@ -16,6 +16,7 @@ import org.mockito.Answers;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.server.ServerWebExchange;
 
@@ -84,6 +85,19 @@ public class MDCServerWebExchangeTest {
 		String result = MDCServerWebExchange.getRemoteAddress(exchange);
 		assertNotNull(result);
 		assertEquals("localhost/127.0.0.1", result);
+	}
+
+	@Test
+	public void getRemoteAddressFromXFF() {
+		Mockito.when(exchange.getRequest().getHeaders()).then(answer-> {
+			HttpHeaders headers = new HttpHeaders();
+			headers.add("X-Forwarded-For", "127.0.0.2,127.0.0.1");
+			return headers;
+		});
+
+		String result = MDCServerWebExchange.getRemoteAddress(exchange);
+		assertNotNull(result);
+		assertEquals("127.0.0.2", result);
 	}
 
 	@Test
