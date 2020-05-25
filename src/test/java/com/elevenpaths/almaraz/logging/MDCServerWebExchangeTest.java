@@ -88,7 +88,7 @@ public class MDCServerWebExchangeTest {
 	}
 
 	@Test
-	public void getRemoteAddressFromXFF() {
+	public void getRemoteAddressFromXFFTest() {
 		Mockito.when(exchange.getRequest().getHeaders()).then(answer-> {
 			HttpHeaders headers = new HttpHeaders();
 			headers.add("X-Forwarded-For", "127.0.0.2,127.0.0.1");
