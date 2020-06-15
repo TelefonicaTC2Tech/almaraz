@@ -30,8 +30,7 @@ public class LoggerWebClientFilter implements ExchangeFilterFunction {
 	public Mono<ClientResponse> filter(ClientRequest request, ExchangeFunction next) {
 		long start = System.currentTimeMillis();
 		String transactionId = UUID.randomUUID().toString();
-		return Mono.empty()
-				.doOnEach(ReactiveLogger.logOnComplete(() -> logRequest(request, transactionId)))
+		return ReactiveLogger.log(() -> logRequest(request, transactionId))
 				.then(next.exchange(request))
 				.doOnEach(ReactiveLogger.logOnNext((response) -> logResponse(response, start, transactionId)));
 	}
@@ -40,6 +39,7 @@ public class LoggerWebClientFilter implements ExchangeFilterFunction {
 	 * Log the request.
 	 *
 	 * @param request
+	 * @param transactionId
 	 */
 	protected void logRequest(ClientRequest request, String transactionId) {
 		MDC.put(ContextField.METHOD, request.method().name());
@@ -53,6 +53,7 @@ public class LoggerWebClientFilter implements ExchangeFilterFunction {
 	 *
 	 * @param response
 	 * @param start Timestamp when the request was received to calculate the latency.
+	 * @param transactionId
 	 */
 	protected void logResponse(ClientResponse response, long start, String transactionId) {
 		MDC.put(ContextField.STATUS, Integer.toString(response.rawStatusCode()));
