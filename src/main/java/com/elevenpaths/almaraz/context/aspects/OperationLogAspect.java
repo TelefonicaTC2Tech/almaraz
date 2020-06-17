@@ -15,11 +15,10 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 /**
-* Aspects for OperationLog annotation.
-*
-* @author Juan Antonio Hernando
-*
-*/
+ * Aspects for OperationLog annotation.
+ *
+ * @author Juan Antonio Hernando
+ */
 @Component
 @Aspect
 public class OperationLogAspect {
