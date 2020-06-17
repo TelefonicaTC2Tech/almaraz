@@ -14,22 +14,20 @@ import org.aspectj.lang.Signature;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.elevenpaths.almaraz.context.annotations.OperationRequestContext;
-
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
 @SuppressWarnings("unchecked")
-public class OperationLogAspectTests {
+public class OperationRequestContextAspectTests {
 
-	private OperationLogAspect operationLogAspect;
+	private OperationRequestContextAspect operationLogAspect;
 	private OperationRequestContext operationRequestContext;
 	private OperationRequestContext emptyOperationRequestContext;
 	
 	@Before
 	public void init() {
-		operationLogAspect = new OperationLogAspect();
+		operationLogAspect = new OperationRequestContextAspect();
 		operationRequestContext = new OperationRequestContext() {
 			
 			@Override
@@ -68,7 +66,6 @@ public class OperationLogAspectTests {
 		StepVerifier.create((Mono<Boolean>) operationLogAspect.operationLog(joinPoint, operationRequestContext))
 			.expectNext(true)
 			.verifyComplete();
-		
 	}
 	
 	@Test
@@ -82,7 +79,6 @@ public class OperationLogAspectTests {
 		StepVerifier.create((Mono<Boolean>) operationLogAspect.operationLog(joinPoint, emptyOperationRequestContext))
 			.expectNext(true)
 			.verifyComplete();
-		
 	}
 	
 	@Test
@@ -96,7 +92,6 @@ public class OperationLogAspectTests {
 		StepVerifier.create((Flux<Boolean>) operationLogAspect.operationLog(joinPoint, operationRequestContext))
 			.expectNext(true)
 			.verifyComplete();
-		
 	}
 	
 	@Test
@@ -107,8 +102,6 @@ public class OperationLogAspectTests {
 		when(joinPoint.proceed()).thenReturn(true);
 		when(joinPoint.getSignature()).thenReturn(signature);
 		assertTrue((Boolean) operationLogAspect.operationLog(joinPoint, operationRequestContext));
-
-		
 	}
 
 }

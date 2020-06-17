@@ -346,6 +346,40 @@ Almaraz provides a hierarchy of exceptions that implements these errors:
 | UnsupportedMediaTypeException | - | 415 | Unsupported media type. |
 | ServerException | server_error | 500 | Internal error due to unhandled exception or bad integration with external systems. |
 
+## OperationRequestContext annotation:
+Almaraz provides a `@OperationRequestContext` annotation in order to set the operation property of the RequestContext. This annotation could be used in the `@Controller` methods. We include two different ways of usage bellow:
+
+Without argument (the method name sets the operation):
+
+```java
+	@OperationRequestContext
+	@DeleteMapping(value = "/{userId}")
+	public Mono<ResponseEntity<Void>> deleteUser(@PathVariable String userId) {
+		return usersService.deleteUser(userId)
+				.then(Mono.just(new ResponseEntity<Void>(HttpStatus.NO_CONTENT)));
+	}
+```
+
+With argument (The argument sets the operation):
+
+```java
+	@OperationRequestContext("delete-user")
+	@DeleteMapping(value = "/{userId}")
+	public Mono<ResponseEntity<Void>> deleteUser(@PathVariable String userId) {
+		return usersService.deleteUser(userId)
+				.then(Mono.just(new ResponseEntity<Void>(HttpStatus.NO_CONTENT)));
+	}
+```
+
+Example of traces:
+
+```json
+{"time":"2020-06-11T16:34:50.142Z","lvl":"INFO","logger":"com.acme.AuthorizationService","op":"patchUser","corr":"e91b36d3-0b54-4759-9bf4-1d1f2eca2cd6","trans":"e91b36d3-0b54-4759-9bf4-1d1f2eca2cd6","msg":"Authorized"}
+```
+```json
+{"time":"2020-06-11T16:34:50.166Z","lvl":"INFO","logger":"com.elevenpaths.almaraz.webfilters.ErrorWebFilter","op":"patchUser","corr":"e91b36d3-0b54-4759-9bf4-1d1f2eca2cd6","trans":"e91b36d3-0b54-4759-9bf4-1d1f2eca2cd6","msg":"Error"}
+```
+
 ## How to publish a new version
 
 This library is published in maven central repository. To publish a new version, it requires to upgrade the version in pom.xml. However, to coordinate the version of the library and the example, the makefile provides the `set-version` target.
