@@ -21,7 +21,7 @@ import reactor.core.publisher.Mono;
 public class OperationRequestContextAspect {
 
 	/**
-	 * It wraps annotated methods with OperationRequestContext and add the operation in the reactive logs.
+	 * It wraps annotated methods with OperationRequestContext and add the operation in the RequestContext.
 	 *
 	 * @param joinPoint
 	 * @param operationRequestContext
