@@ -113,14 +113,13 @@ public class AlmarazConfiguration implements WebFluxConfigurer {
 	}
 	
 	/**
-	 * Get the Operation request context aspect.
-	 *
+	 * Get an instance of OperationRequestContext aspect.
 	 * @return OperationRequestContextAspect
 	 */
 	@Bean
-	public OperationRequestContextAspect getOperationRequestContextAspect() {
-		return new OperationRequestContextAspect();
-	}
+    public OperationRequestContextAspect getOperationRequestContextAspect() {
+        return new OperationRequestContextAspect();
+    }
 
 	/**
 	 * Get the {@link RequestContextWebFilter} that generates the reactive context
@@ -136,7 +135,6 @@ public class AlmarazConfiguration implements WebFluxConfigurer {
 		}
 		return new VersionWebFilter(objectMapper, buildProperties);
 	}
-
 
 	/**
 	 * Get the {@link RequestContextWebFilter} that generates the reactive context

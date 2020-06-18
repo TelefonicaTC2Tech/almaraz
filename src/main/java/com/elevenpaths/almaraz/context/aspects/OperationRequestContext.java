@@ -31,7 +31,7 @@ import java.lang.annotation.Target;
 public @interface OperationRequestContext {
 	/**
 	 * Operation name.
-	 * @return
+	 * @return String
 	 */
 	public String value() default "";
 }
