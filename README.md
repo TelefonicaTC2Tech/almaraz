@@ -53,6 +53,23 @@ public static Mono<RequestContext> context() {
 
 Note that it is assumed that `RequestContext` is always stored in the Reactor context under the key `RequestContext.class`.
 
+### Operation in the context
+
+It is not possible to identify the operation in a web filter when using a Spring `@Controller` because the controller is responsible for the routing of the request to the appropriate method. It would be very repetitive to include the operation in each controller method. Apart from that, updating the context is a bit tricky due to its reactive nature.
+
+Almaraz provides the Java annotation `@OperationRequestContext` to decorate a method and update the `RequestContext` with the operation name. By default, it takes the method name as operation, but it could be customized with a `value` parameter.
+
+It is recommended to annotate the controller methods so that the `RequestContext` is enriched with the operation and the log records can identify which operation is served.
+
+```java
+@OperationRequestContext
+@DeleteMapping(value = "/{userId}")
+public Mono<ResponseEntity<Void>> deleteUser(@PathVariable String userId) {
+	return usersService.deleteUser(userId)
+			.then(Mono.just(new ResponseEntity<Void>(HttpStatus.NO_CONTENT)));
+}
+```
+
 ## Logging
 
 Logging is based on the ideas provided by Simon Basle in [Contextual Logging with Reactor Context and MDC](https://simonbasle.github.io/2018/02/contextual-logging-with-reactor-context-and-mdc/). The implementation uses Reactor `doOnEach`:
@@ -345,40 +362,6 @@ Almaraz provides a hierarchy of exceptions that implements these errors:
 | ConflictException | conflict | 409 | Error due to a conflict. For example, when it is not possible to create a resource in database due to a violation of the uniqueness of a field. |
 | UnsupportedMediaTypeException | - | 415 | Unsupported media type. |
 | ServerException | server_error | 500 | Internal error due to unhandled exception or bad integration with external systems. |
-
-## OperationRequestContext annotation:
-Almaraz provides a `@OperationRequestContext` annotation in order to set the operation property of the RequestContext. This annotation could be used in the `@Controller` methods. We include two different ways of usage bellow:
-
-Without argument (the method name sets the operation):
-
-```java
-	@OperationRequestContext
-	@DeleteMapping(value = "/{userId}")
-	public Mono<ResponseEntity<Void>> deleteUser(@PathVariable String userId) {
-		return usersService.deleteUser(userId)
-				.then(Mono.just(new ResponseEntity<Void>(HttpStatus.NO_CONTENT)));
-	}
-```
-
-With argument (The argument sets the operation):
-
-```java
-	@OperationRequestContext("delete-user")
-	@DeleteMapping(value = "/{userId}")
-	public Mono<ResponseEntity<Void>> deleteUser(@PathVariable String userId) {
-		return usersService.deleteUser(userId)
-				.then(Mono.just(new ResponseEntity<Void>(HttpStatus.NO_CONTENT)));
-	}
-```
-
-Example of traces:
-
-```json
-{"time":"2020-06-11T16:34:50.142Z","lvl":"INFO","logger":"com.acme.AuthorizationService","op":"patchUser","corr":"e91b36d3-0b54-4759-9bf4-1d1f2eca2cd6","trans":"e91b36d3-0b54-4759-9bf4-1d1f2eca2cd6","msg":"Authorized"}
-```
-```json
-{"time":"2020-06-11T16:34:50.166Z","lvl":"INFO","logger":"com.elevenpaths.almaraz.webfilters.ErrorWebFilter","op":"patchUser","corr":"e91b36d3-0b54-4759-9bf4-1d1f2eca2cd6","trans":"e91b36d3-0b54-4759-9bf4-1d1f2eca2cd6","msg":"Error"}
-```
 
 ## How to publish a new version
 
