@@ -7,17 +7,17 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Annotation to add in the RequestContext the operation type in the log traces.
+ * Annotation to add the operation to the RequestContext.
  * 
  * Usage:
  * <code>
  * {@literal @}RestController
  * public class DemoController {
- * 		{@literal @}OperationRequestContext("insert-user")
- *  	{@literal @}PostMapping(value = "/users")
- *  	public String insertUser(@ValidRequestBody("json-schema") TestType value) {
- *  		...
- *  	}
+ * 	{@literal @}OperationRequestContext("insert-user")
+ * 	{@literal @}PostMapping(value = "/users")
+ * 	public String insertUser(@ValidRequestBody("json-schema") TestType value) {
+ * 		...
+ * 	}
  * }
  * </code>
  * 
@@ -31,6 +31,7 @@ import java.lang.annotation.Target;
 public @interface OperationRequestContext {
 	/**
 	 * Operation name.
+	 *
 	 * @return String
 	 */
 	public String value() default "";
