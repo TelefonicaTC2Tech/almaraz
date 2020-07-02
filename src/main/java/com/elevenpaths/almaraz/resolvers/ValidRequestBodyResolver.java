@@ -131,7 +131,7 @@ public class ValidRequestBodyResolver implements HandlerMethodArgumentResolver {
 						JsonNode node = objectMapper.valueToTree(formData);
 						return validateAndMarshal(schemaName, node, valueType);
 					} catch (IOException e) {
-						throw new InvalidRequestException("invalid urlencoded body", e);
+						throw new InvalidRequestException("invalid urlencoded body");
 					}
 				});
 	}
@@ -153,7 +153,7 @@ public class ValidRequestBodyResolver implements HandlerMethodArgumentResolver {
 				}
 				return validateAndMarshal(schemaName, node, valueType);
 			} catch (IOException e) {
-				throw new InvalidRequestException("invalid json body", e);
+				throw new InvalidRequestException("invalid json body");
 			}
 		});
 	}
@@ -173,7 +173,7 @@ public class ValidRequestBodyResolver implements HandlerMethodArgumentResolver {
 			JsonNode node = objectMapper.valueToTree(multi ? queryParams : toSingleValueMap(queryParams));
 			return Mono.just(validateAndMarshal(schemaName, node, valueType));
 		} catch (IOException e) {
-			throw new InvalidRequestException("invalid query params", e);
+			throw new InvalidRequestException("invalid query params");
 		}
 
 	}
