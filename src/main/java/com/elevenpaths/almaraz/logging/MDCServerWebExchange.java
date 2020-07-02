@@ -41,7 +41,7 @@ public class MDCServerWebExchange {
 	public static String getMethod(ServerWebExchange exchange) {
 		try {
 			return exchange.getRequest().getMethodValue();
-		} catch (Exception e) {
+		} catch (NullPointerException e) {
 			return null;
 		}
 	}
@@ -55,7 +55,7 @@ public class MDCServerWebExchange {
 	public static String getPath(ServerWebExchange exchange) {
 		try {
 			return exchange.getRequest().getPath().value();
-		} catch (Exception e) {
+		} catch (NullPointerException e) {
 			return null;
 		}
 	}
@@ -86,7 +86,7 @@ public class MDCServerWebExchange {
 	public static String getRemoteAddressFromTCP(ServerWebExchange exchange) {
 		try {
 			return exchange.getRequest().getRemoteAddress().getAddress().toString();
-		} catch (Exception e) {
+		} catch (NullPointerException e) {
 			return null;
 		}
 	}
@@ -102,7 +102,7 @@ public class MDCServerWebExchange {
 	public static String getRemoteAddressFromXFF(ServerWebExchange exchange) {
 		try {
 			return exchange.getRequest().getHeaders().getValuesAsList(X_FORWARDED_FOR_HEADER).get(0);
-		} catch (Exception e) {
+		} catch (NullPointerException | IndexOutOfBoundsException e) {
 			return null;
 		}
 	}
@@ -116,7 +116,7 @@ public class MDCServerWebExchange {
 	public static String getStatusCode(ServerWebExchange exchange) {
 		try {
 			return Integer.toString(exchange.getResponse().getStatusCode().value());
-		} catch (Exception e) {
+		} catch (NullPointerException e) {
 			return null;
 		}
 	}

@@ -214,7 +214,7 @@ public class RequestContext {
 	public Long getLong(String key) {
 		try {
 			return Long.valueOf(getString(key));
-		} catch (Exception e) {
+		} catch (NullPointerException | NumberFormatException e) {
 			return null;
 		}
 	}
@@ -239,11 +239,8 @@ public class RequestContext {
 	 * @return Value of the context property as {@link Boolean}.
 	 */
 	public Boolean getBoolean(String key) {
-		try {
-			return Boolean.valueOf(getString(key));
-		} catch (Exception e) {
-			return null;
-		}
+		String value = getString(key);
+		return value == null ? null : Boolean.valueOf(getString(key));
 	}
 
 	/**
