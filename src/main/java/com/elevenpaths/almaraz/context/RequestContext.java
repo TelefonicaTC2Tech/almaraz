@@ -239,8 +239,8 @@ public class RequestContext {
 	 * @return Value of the context property as {@link Boolean}.
 	 */
 	public Boolean getBoolean(String key) {
-		String value = getString(key);
-		return value == null ? null : Boolean.valueOf(getString(key));
+		return Boolean.valueOf(getString(key));
+
 	}
 
 	/**
