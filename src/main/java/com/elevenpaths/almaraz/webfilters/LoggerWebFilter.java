@@ -57,6 +57,7 @@ public class LoggerWebFilter implements WebFilter {
 	protected void logRequest(ServerWebExchange exchange) {
 		MDC.put(ContextField.METHOD, MDCServerWebExchange.getMethod(exchange));
 		MDC.put(ContextField.PATH, MDCServerWebExchange.getPath(exchange));
+		MDC.put(ContextField.QUERY, MDCServerWebExchange.getQueryParams(exchange));
 		MDC.put(ContextField.ADDRESS, MDCServerWebExchange.getRemoteAddress(exchange));
 		log.info("Request");
 	}

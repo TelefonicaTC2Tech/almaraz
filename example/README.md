@@ -90,7 +90,7 @@ Response
 HTTP/1.1 200 OK
 transfer-encoding: chunked
 Content-Type: application/json;charset=UTF-8
-Unica-Correlator: 85fd01f9-1958-461a-a494-749b88b3bc88
+Unica-Correlator: 76e72faf-2713-4d7c-aec8-c4810e738746
 
 [{"name":"jorge","country":"es"}]
 ```
@@ -98,8 +98,8 @@ Unica-Correlator: 85fd01f9-1958-461a-a494-749b88b3bc88
 Logs
 
 ```json
-{"time":"2019-06-17T11:55:48.293+00:00","lvl":"INFO","logger":"com.elevenpaths.almaraz.webfilters.LoggerWebFilter","path":"/api/users","corr":"85fd01f9-1958-461a-a494-749b88b3bc88","address":"/0:0:0:0:0:0:0:1","method":"GET","trans":"85fd01f9-1958-461a-a494-749b88b3bc88","msg":"Request","svc":"almaraz-example"}
-{"time":"2019-06-17T11:55:48.314+00:00","lvl":"INFO","logger":"com.elevenpaths.almaraz.webfilters.LoggerWebFilter","corr":"85fd01f9-1958-461a-a494-749b88b3bc88","trans":"85fd01f9-1958-461a-a494-749b88b3bc88","msg":"Response","svc":"almaraz-example","status":200,"latency":21}
+{"time":"2020-07-08T10:20:02.064Z","lvl":"INFO","logger":"com.elevenpaths.almaraz.webfilters.LoggerWebFilter","path":"/api/users","corr":"76e72faf-2713-4d7c-aec8-c4810e738746","address":"/127.0.0.1","method":"GET","query":"{name=[jorge], country=[es]}","trans":"76e72faf-2713-4d7c-aec8-c4810e738746","msg":"Request","svc":"almaraz-example"}
+{"time":"2020-07-08T10:20:02.066Z","lvl":"INFO","logger":"com.elevenpaths.almaraz.webfilters.LoggerWebFilter","corr":"76e72faf-2713-4d7c-aec8-c4810e738746","trans":"76e72faf-2713-4d7c-aec8-c4810e738746","msg":"Response","svc":"almaraz-example","status":200,"latency":2}
 ```
 
 ## Invalid request body (violation of JSON schema)
@@ -142,7 +142,7 @@ Response
 ```http
 HTTP/1.1 400 Bad Request
 Content-Type: application/json;charset=UTF-8
-Unica-Correlator: b96c7959-9630-4cbd-8058-e65c3dbb4b1f
+Unica-Correlator: c9b65707-f92e-4b92-8856-cf527a0ba6dc
 content-length: 95
 
 {"error":"invalid_request","error_description":"$.addressCode: string found, integer expected"}
@@ -151,9 +151,9 @@ content-length: 95
 Logs
 
 ```json
-{"time":"2019-06-17T11:57:01.981+00:00","lvl":"INFO","logger":"com.elevenpaths.almaraz.webfilters.LoggerWebFilter","path":"/api/users","corr":"b96c7959-9630-4cbd-8058-e65c3dbb4b1f","address":"/0:0:0:0:0:0:0:1","method":"GET","trans":"b96c7959-9630-4cbd-8058-e65c3dbb4b1f","msg":"Request","svc":"almaraz-example"}
-{"time":"2019-06-17T11:57:01.983+00:00","lvl":"INFO","logger":"com.elevenpaths.almaraz.webfilters.ErrorWebFilter","reason":"$.addressCode: string found, integer expected","corr":"b96c7959-9630-4cbd-8058-e65c3dbb4b1f","error":"invalid_request","trans":"b96c7959-9630-4cbd-8058-e65c3dbb4b1f","msg":"Error","svc":"almaraz-example"}
-{"time":"2019-06-17T11:57:01.983+00:00","lvl":"INFO","logger":"com.elevenpaths.almaraz.webfilters.LoggerWebFilter","corr":"b96c7959-9630-4cbd-8058-e65c3dbb4b1f","trans":"b96c7959-9630-4cbd-8058-e65c3dbb4b1f","msg":"Response","svc":"almaraz-example","status":400,"latency":2}
+{"time":"2020-07-08T10:22:02.664Z","lvl":"INFO","logger":"com.elevenpaths.almaraz.webfilters.LoggerWebFilter","path":"/api/users","corr":"c9b65707-f92e-4b92-8856-cf527a0ba6dc","address":"/127.0.0.1","method":"GET","query":"{name=[jorge], country=[es], addressCode=[street]}","trans":"c9b65707-f92e-4b92-8856-cf527a0ba6dc","msg":"Request","svc":"almaraz-example"}
+{"time":"2020-07-08T10:22:02.671Z","lvl":"INFO","logger":"com.elevenpaths.almaraz.webfilters.ErrorWebFilter","reason":"$.addressCode: string found, integer expected","corr":"c9b65707-f92e-4b92-8856-cf527a0ba6dc","error":"invalid_request","trans":"c9b65707-f92e-4b92-8856-cf527a0ba6dc","msg":"Error","svc":"almaraz-example"}
+{"time":"2020-07-08T10:22:02.673Z","lvl":"INFO","logger":"com.elevenpaths.almaraz.webfilters.LoggerWebFilter","corr":"c9b65707-f92e-4b92-8856-cf527a0ba6dc","trans":"c9b65707-f92e-4b92-8856-cf527a0ba6dc","msg":"Response","svc":"almaraz-example","status":400,"latency":9}
 ```
 
 ## Request using WebClient

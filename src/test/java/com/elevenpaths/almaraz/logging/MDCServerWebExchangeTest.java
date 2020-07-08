@@ -76,6 +76,25 @@ public class MDCServerWebExchangeTest {
 	}
 
 	@Test
+	public void getQueryParamsTest() {
+		Mockito.when(exchange.getRequest().getQueryParams().toString()).then(answer-> {
+			return "test=[test], test2=[test]";
+		});
+		String result = MDCServerWebExchange.getQueryParams(exchange);
+		assertNotNull(result);
+		assertEquals("test=[test], test2=[test]", result);
+	}
+
+	@Test
+	public void getQueryParamsExceptionTest() {
+		Mockito.when(exchange.getRequest().getQueryParams().toString()).then(answer-> {
+			throw new Exception("error");
+		});
+		String result = MDCServerWebExchange.getQueryParams(exchange);
+		assertNull(result);
+	}
+
+	@Test
 	public void getRemoteAddressTest() {
 		InetSocketAddress inetSocketAddress = new InetSocketAddress("localhost", 8080);
 		Mockito.when(exchange.getRequest().getRemoteAddress()).then(answer-> {

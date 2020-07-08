@@ -61,6 +61,20 @@ public class MDCServerWebExchange {
 	}
 
 	/**
+	 * Get the query params of the exchange request.
+	 *
+	 * @param exchange
+	 * @return request query params
+	 */
+	public static String getQueryParams(ServerWebExchange exchange) {
+		try {
+			return exchange.getRequest().getQueryParams().toString();
+		} catch (Exception e) {
+			return null;
+		} 
+	}
+
+	/**
 	 * Get the remote address of the exchange request.
 	 * If the request contains a X-Forwarded-For HTTP header, it returns the first address. Otherwise, it returns
 	 * the remote address obtained from TCP/IP.

@@ -80,6 +80,11 @@ public class ContextField {
 	public static final String PATH = "path";
 
 	/**
+	 * Field name with the query params of the request.
+	 */
+	public static final String QUERY = "query";
+
+	/**
 	 * Request URL.
 	 * Unlike {@link #PATH}, it includes the whole URL. This is useful for web clients.
 	 */
