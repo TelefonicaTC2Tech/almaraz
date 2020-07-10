@@ -54,7 +54,7 @@ public class MDCServerWebExchange {
 	 */
 	public static String getPath(ServerWebExchange exchange) {
 		try {
-			return exchange.getRequest().getPath().value();
+			return exchange.getRequest().getURI().getPath();
 		} catch (Exception e) {
 			return null;
 		}
@@ -68,7 +68,7 @@ public class MDCServerWebExchange {
 	 */
 	public static String getQueryParams(ServerWebExchange exchange) {
 		try {
-			return exchange.getRequest().getQueryParams().toString();
+			return exchange.getRequest().getURI().getQuery();
 		} catch (Exception e) {
 			return null;
 		} 

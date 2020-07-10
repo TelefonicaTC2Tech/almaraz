@@ -8,6 +8,8 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 
 import java.net.InetSocketAddress;
+import java.net.URI;
+import java.net.URISyntaxException;
 
 import org.junit.After;
 import org.junit.Test;
@@ -39,7 +41,7 @@ public class MDCServerWebExchangeTest {
 
 	@Test
 	public void getMethodTest() {
-		Mockito.when(exchange.getRequest().getMethodValue()).then(answer-> {
+		Mockito.when(exchange.getRequest().getMethodValue()).then(answer -> {
 			return "test";
 		});
 		String result = MDCServerWebExchange.getMethod(exchange);
@@ -49,7 +51,7 @@ public class MDCServerWebExchangeTest {
 
 	@Test
 	public void getMethodExceptionTest() {
-		Mockito.when(exchange.getRequest().getMethodValue()).then(answer-> {
+		Mockito.when(exchange.getRequest().getMethodValue()).then(answer -> {
 			throw new Exception("error");
 		});
 		String result = MDCServerWebExchange.getMethod(exchange);
@@ -57,18 +59,19 @@ public class MDCServerWebExchangeTest {
 	}
 
 	@Test
-	public void getPathTest() {
-		Mockito.when(exchange.getRequest().getPath().value()).then(answer-> {
-			return "test";
+	public void getPathTest() throws URISyntaxException {
+		URI uri = new URI("http://test.test/path/test?key=test&key2=test2");
+		Mockito.when(exchange.getRequest().getURI()).then(answer-> {
+			return uri;
 		});
 		String result = MDCServerWebExchange.getPath(exchange);
 		assertNotNull(result);
-		assertEquals("test", result);
+		assertEquals("/path/test", result);
 	}
 
 	@Test
 	public void getPathExceptionTest() {
-		Mockito.when(exchange.getRequest().getPath().value()).then(answer-> {
+		Mockito.when(exchange.getRequest().getURI()).then(answer-> {
 			throw new Exception("error");
 		});
 		String result = MDCServerWebExchange.getPath(exchange);
@@ -76,18 +79,19 @@ public class MDCServerWebExchangeTest {
 	}
 
 	@Test
-	public void getQueryParamsTest() {
-		Mockito.when(exchange.getRequest().getQueryParams().toString()).then(answer-> {
-			return "test=[test], test2=[test]";
+	public void getQueryParamsTest() throws URISyntaxException {
+		URI uri = new URI("http://test.test/path/test?key=test&key2=test2");
+		Mockito.when(exchange.getRequest().getURI()).then(answer-> {
+			return uri;
 		});
 		String result = MDCServerWebExchange.getQueryParams(exchange);
 		assertNotNull(result);
-		assertEquals("test=[test], test2=[test]", result);
+		assertEquals("key=test&key2=test2", result);
 	}
 
 	@Test
 	public void getQueryParamsExceptionTest() {
-		Mockito.when(exchange.getRequest().getQueryParams().toString()).then(answer-> {
+		Mockito.when(exchange.getRequest().getURI()).then(answer-> {
 			throw new Exception("error");
 		});
 		String result = MDCServerWebExchange.getQueryParams(exchange);
