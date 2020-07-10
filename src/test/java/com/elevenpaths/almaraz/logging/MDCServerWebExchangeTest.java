@@ -41,7 +41,7 @@ public class MDCServerWebExchangeTest {
 
 	@Test
 	public void getMethodTest() {
-		Mockito.when(exchange.getRequest().getMethodValue()).then(answer -> {
+		Mockito.when(exchange.getRequest().getMethodValue()).then(answer-> {
 			return "test";
 		});
 		String result = MDCServerWebExchange.getMethod(exchange);
@@ -51,7 +51,7 @@ public class MDCServerWebExchangeTest {
 
 	@Test
 	public void getMethodExceptionTest() {
-		Mockito.when(exchange.getRequest().getMethodValue()).then(answer -> {
+		Mockito.when(exchange.getRequest().getMethodValue()).then(answer-> {
 			throw new Exception("error");
 		});
 		String result = MDCServerWebExchange.getMethod(exchange);
