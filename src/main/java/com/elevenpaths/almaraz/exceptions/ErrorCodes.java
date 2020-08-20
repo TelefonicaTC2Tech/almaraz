@@ -14,6 +14,8 @@ public final class ErrorCodes {
 
 	public static final String SERVER_ERROR = "server_error";
 
+	public static final String NOT_FOUND = "not_found";
+
 	public static final String INVALID_CLIENT = "invalid_client";
 
 	public static final String INVALID_GRANT = "invalid_grant";

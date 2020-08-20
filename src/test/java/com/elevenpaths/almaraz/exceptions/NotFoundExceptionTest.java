@@ -26,4 +26,25 @@ public class NotFoundExceptionTest {
 		Assert.assertNull(e.getHeaders());
 		Assert.assertNull(e.getDetailMap());
 	}
+
+	@Test
+	public void newNotFoundExceptionWithReason() {
+		NotFoundException e = new NotFoundException("reason");
+		Assert.assertEquals(HttpStatus.NOT_FOUND, e.getStatus());
+		Assert.assertEquals(ErrorCodes.NOT_FOUND, e.getError());
+		Assert.assertEquals("reason", e.getReason());
+		Assert.assertNull(e.getCause());
+		Assert.assertNull(e.getHeaders());
+		Assert.assertNull(e.getDetailMap());
+	}
+
+	@Test
+	public void newNotFoundExceptionWithReasonAndException() {
+		Throwable t = new Exception("test");
+		NotFoundException e = new NotFoundException("reason", t);
+		Assert.assertEquals(HttpStatus.NOT_FOUND, e.getStatus());
+		Assert.assertEquals(ErrorCodes.NOT_FOUND, e.getError());
+		Assert.assertEquals("reason", e.getReason());
+		Assert.assertEquals(t, e.getCause());
+	}
 }
