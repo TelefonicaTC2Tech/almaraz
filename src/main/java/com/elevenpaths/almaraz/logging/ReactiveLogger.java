@@ -67,7 +67,7 @@ public class ReactiveLogger {
 				return;
 			}
 			try {
-				RequestContext logContext = signal.getContext().getOrDefault(RequestContext.class, new RequestContext());
+				RequestContext logContext = signal.getContextView().getOrDefault(RequestContext.class, new RequestContext());
 				MDC.setContextMap(logContext.getContextMap());
 				log.accept(signal);
 			} finally {

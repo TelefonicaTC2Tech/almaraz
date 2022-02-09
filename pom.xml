@@ -5,7 +5,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.elevenpaths.almaraz</groupId>
 	<artifactId>almaraz</artifactId>
-	<version>0.2.7</version>
+	<version>0.3.0</version>
 	<packaging>jar</packaging>
 
 	<name>${project.groupId}:${project.artifactId}</name>
@@ -42,17 +42,17 @@
 	</scm>
 
 	<properties>
-		<java.version>1.8</java.version>
+		<java.version>11</java.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
-		<spring.version>5.1.14.RELEASE</spring.version>
-		<spring-boot.version>2.1.13.RELEASE</spring-boot.version>
+		<spring.version>5.3.15</spring.version>
+		<spring-boot.version>2.6.3</spring-boot.version>
 		<reactor.version>3.2.15.RELEASE</reactor.version>
 		<json.schema.version>1.0.19</json.schema.version>
-		<logback.version>1.2.3</logback.version>
+		<logback.version>1.2.10</logback.version>
 		<junit.version>4.12</junit.version>
 		<mockito.version>2.23.4</mockito.version>
-		<lombok.version>1.18.12</lombok.version>
+		<lombok.version>1.18.22</lombok.version>
 	</properties>
 
 	<dependencies>

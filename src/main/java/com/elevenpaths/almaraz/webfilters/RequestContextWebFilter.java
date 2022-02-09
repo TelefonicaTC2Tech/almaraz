@@ -112,7 +112,7 @@ public class RequestContextWebFilter implements WebFilter {
 			return Mono.empty();
 		});
 		return chain.filter(exchange)
-				.subscriberContext(Context.of(RequestContext.class, requestContext));
+				.contextWrite(Context.of(RequestContext.class, requestContext));
 	}
 
 	/**

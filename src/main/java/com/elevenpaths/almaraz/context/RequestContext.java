@@ -259,7 +259,7 @@ public class RequestContext {
 	 * @return Reactive {@link RequestContext} from reactor context.
 	 */
 	public static Mono<RequestContext> context() {
-		return Mono.subscriberContext()
+		return Mono.deferContextual(Mono::just)
 				.map(ctxt -> ctxt.getOrDefault(RequestContext.class, new RequestContext()));
 	}
 
