@@ -148,7 +148,7 @@ public class ValidRequestBodyResolver implements HandlerMethodArgumentResolver {
 		return getBodyInputStream(exchange).map(is -> {
 			try {
 				JsonNode node = objectMapper.readTree(is);
-				if (node == null) {
+				if (node == null || node.isMissingNode()) {
 					throw new InvalidRequestException("expected json body");
 				}
 				return validateAndMarshal(schemaName, node, valueType);
