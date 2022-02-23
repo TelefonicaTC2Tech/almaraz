@@ -1,5 +1,5 @@
-[![CircleCI](https://circleci.com/gh/Telefonica/almaraz/tree/master.svg?style=svg)](https://circleci.com/gh/Telefonica/almaraz/tree/master)
-[![codecov](https://codecov.io/gh/Telefonica/almaraz/branch/master/graph/badge.svg)](https://codecov.io/gh/Telefonica/almaraz/branch/master)
+[![CircleCI](https://circleci.com/gh/TelefonicaTC2Tech/almaraz/tree/master.svg?style=svg)](https://circleci.com/gh/TelefonicaTC2Tech/almaraz/tree/master)
+[![codecov](https://codecov.io/gh/TelefonicaTC2Tech/almaraz/branch/master/graph/badge.svg)](https://codecov.io/gh/TelefonicaTC2Tech/almaraz/branch/master)
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.elevenpaths.almaraz/almaraz/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.elevenpaths.almaraz/almaraz)
 
 # Almaraz
