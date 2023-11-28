@@ -46,7 +46,7 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
 		<spring.version>5.3.18</spring.version>
-		<spring-boot.version>2.6.6</spring-boot.version>
+		<spring-boot.version>2.7.18</spring-boot.version>
 		<reactor.version>3.2.15.RELEASE</reactor.version>
 		<json.schema.version>1.0.19</json.schema.version>
 		<logback.version>1.2.10</logback.version>
