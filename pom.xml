@@ -49,7 +49,7 @@
 		<spring-boot.version>2.6.6</spring-boot.version>
 		<reactor.version>3.2.15.RELEASE</reactor.version>
 		<json.schema.version>1.0.19</json.schema.version>
-		<logback.version>1.2.10</logback.version>
+		<logback.version>1.3.12</logback.version>
 		<junit.version>4.12</junit.version>
 		<mockito.version>2.23.4</mockito.version>
 		<lombok.version>1.18.22</lombok.version>
